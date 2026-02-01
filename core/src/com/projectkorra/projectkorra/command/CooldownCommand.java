@@ -72,7 +72,7 @@ public class CooldownCommand extends PKCommand {
             }
             _execute(sender, list, oPlayer);
         }).exceptionally(e -> {
-            e.printStackTrace();
+            ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
             return null;
         });;
     }
@@ -186,7 +186,7 @@ public class CooldownCommand extends PKCommand {
                 ChatUtil.sendBrandingMessage(sender, ChatColor.GREEN + message);
             }
         }).exceptionally(e -> {
-            e.printStackTrace();
+            ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
             return null;
         });
     }

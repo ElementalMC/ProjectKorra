@@ -85,25 +85,25 @@ public class StatisticsManager extends Manager implements Runnable {
 			}
 			for (final Statistic statistic : Statistic.values()) {
 				final String statName = statistic.getStatisticName(ability);
-				final ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_statKeys WHERE statName = '" + statName + "'");
-				try {
-					if (!rs.next()) {
+				try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_statKeys WHERE statName = '" + statName + "'")) {
+					if (rs != null && !rs.next()) {
 						DBConnection.sql.modifyQuery("INSERT INTO pk_statKeys (statName) VALUES ('" + statName + "')", false);
 					}
 				} catch (final SQLException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 		}
 		// Populate Keys Map with all loaded statName(s) in pk_statKeys.
-		final ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_statKeys");
-		try {
-			while (rs.next()) {
-				this.KEYS_BY_NAME.put(rs.getString("statName"), rs.getInt("id"));
-				this.KEYS_BY_ID.put(rs.getInt("id"), rs.getString("statName"));
+		try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_statKeys")) {
+			if (rs != null) {
+				while (rs.next()) {
+					this.KEYS_BY_NAME.put(rs.getString("statName"), rs.getInt("id"));
+					this.KEYS_BY_ID.put(rs.getInt("id"), rs.getString("statName"));
+				}
 			}
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 
@@ -116,7 +116,7 @@ public class StatisticsManager extends Manager implements Runnable {
 				this.DELTA.get(uuid).put(rs.getInt("statId"), 0L);
 			}
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 
@@ -135,7 +135,7 @@ public class StatisticsManager extends Manager implements Runnable {
 					DBConnection.sql.modifyQuery("UPDATE pk_stats SET statValue = statValue + " + statValue + " WHERE uuid = '" + uuid.toString() + "' AND statId = " + statId + ";", async);
 				}
 			} catch (final SQLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 	}
@@ -158,7 +158,7 @@ public class StatisticsManager extends Manager implements Runnable {
 					return rs.getLong("statValue");
 				}
 			} catch (final SQLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 			return 0;
 		} else if (!this.STATISTICS.get(uuid).containsKey(statId)) {
@@ -187,7 +187,7 @@ public class StatisticsManager extends Manager implements Runnable {
 					map.put(statId, statValue);
 				}
 			} catch (final SQLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 			return map;
 		}

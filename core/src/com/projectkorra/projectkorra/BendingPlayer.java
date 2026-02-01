@@ -152,7 +152,7 @@ public class BendingPlayer extends OfflineBendingPlayer {
 				if (bool.isPresent()) return bool.get(); //If the hook didn't return
 			} catch (Exception e) {
 				ProjectKorra.log.severe("An error occurred while running CanBendHook registered by " + plugin.getName() + ".");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 
@@ -281,7 +281,7 @@ public class BendingPlayer extends OfflineBendingPlayer {
 				if (bool.isPresent()) return bool.get(); //If the hook didn't return
 			} catch (Exception e) {
 				ProjectKorra.log.severe("An error occurred while running CanBindHook registered by " + plugin.getName() + ".");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 
@@ -349,7 +349,7 @@ public class BendingPlayer extends OfflineBendingPlayer {
 		try {
 			return getOrLoadOfflineAsync(oPlayer).get();
 		} catch (ExecutionException | InterruptedException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return null;
 		}
 	}

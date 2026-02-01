@@ -178,7 +178,7 @@ public class StatisticsMethods {
 					Manager.getManager(StatisticsManager.class).getKeysById().put(rs.getInt("id"), rs.getString("statName"));
 				}
 			} catch (final SQLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 		return Manager.getManager(StatisticsManager.class).getKeysByName().containsKey(statName) ? Manager.getManager(StatisticsManager.class).getKeysByName().get(statName) : -1;

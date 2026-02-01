@@ -87,27 +87,27 @@ public class Preset {
 				if (uuid == null) {
 					return;
 				}
-				try {
-					final PreparedStatement ps = DBConnection.sql.getConnection().prepareStatement(loadQuery);
+				try (PreparedStatement ps = DBConnection.sql.getConnection().prepareStatement(loadQuery)) {
 					ps.setString(1, uuid.toString());
-					final ResultSet rs = ps.executeQuery();
-					if (rs.next()) { // Presets exist.
-						int i = 0;
-						do {
-							final HashMap<Integer, String> moves = new HashMap<Integer, String>();
-							for (int total = 1; total <= 9; total++) {
-								final String slot = rs.getString("slot" + total);
-								if (slot != null) {
-									moves.put(total, slot);
+					try (ResultSet rs = ps.executeQuery()) {
+						if (rs.next()) { // Presets exist.
+							int i = 0;
+							do {
+								final HashMap<Integer, String> moves = new HashMap<>();
+								for (int total = 1; total <= 9; total++) {
+									final String slot = rs.getString("slot" + total);
+									if (slot != null) {
+										moves.put(total, slot);
+									}
 								}
-							}
-							new Preset(uuid, rs.getString("name"), moves);
-							i++;
-						} while (rs.next());
-						ProjectKorra.log.info("Loaded " + i + " presets for " + player.getName());
+								new Preset(uuid, rs.getString("name"), moves);
+								i++;
+							} while (rs.next());
+							ProjectKorra.log.info("Loaded " + i + " presets for " + player.getName());
+						}
 					}
 				} catch (final SQLException ex) {
-					ex.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, ex.getMessage(), ex);
 				}
 			}
 		}.runTaskAsynchronously(ProjectKorra.plugin);
@@ -280,7 +280,7 @@ public class Preset {
 					presets.get(uuid).remove(instance);
 					future.complete(true);
 				} catch (final SQLException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 					future.complete(false);
 				}
 			}
@@ -315,7 +315,7 @@ public class Preset {
 					ps.execute();
 					future.complete(true);
 				} catch (final SQLException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 					future.complete(false);
 				}
 			}

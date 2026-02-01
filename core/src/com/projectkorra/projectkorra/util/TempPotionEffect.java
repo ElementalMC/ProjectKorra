@@ -37,6 +37,13 @@ public class TempPotionEffect {
 		}
 	}
 
+	/**
+	 * Remove all temp potion effects for an entity (e.g. on player quit to avoid holding references).
+	 */
+	public static void removeForEntity(final LivingEntity entity) {
+		instances.remove(entity);
+	}
+
 	private void addEffect(final PotionEffect effect) {
 		for (final PotionEffect peffect : this.entity.getActivePotionEffects()) {
 			if (peffect.getType().equals(effect.getType())) {

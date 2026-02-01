@@ -304,7 +304,7 @@ public abstract class PKCommand implements SubCommand {
 	public CompletableFuture<OfflinePlayer> getPlayer(String name) {
 		CompletableFuture<OfflinePlayer> future = new CompletableFuture<OfflinePlayer>().whenComplete((o, e) -> {
 			if (e != null) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		});
 

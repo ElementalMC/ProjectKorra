@@ -6,11 +6,9 @@ import java.lang.annotation.Annotation;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -282,10 +280,10 @@ public abstract class CoreAbility implements Ability {
 
 					Bukkit.getServer().getPluginManager().callEvent(new AbilityProgressEvent(abil));
 				} catch (final Exception e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 					Bukkit.getLogger().severe(abil.toString());
 					try {
-						abil.getPlayer().sendMessage(ChatColor.YELLOW + "[" + new SimpleDateFormat("dd-MM-yyyy HH:mm:ss").format(new Date()) + "] " + ChatColor.RED + "There was an error running " + abil.getName() + ". please notify the server owner describing exactly what you were doing at this moment");
+						abil.getPlayer().sendMessage(ChatColor.YELLOW + "[" + java.time.ZonedDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss")) + "] " + ChatColor.RED + "There was an error running " + abil.getName() + ". please notify the server owner describing exactly what you were doing at this moment");
 					} catch (final Exception me) {
 						Bukkit.getLogger().severe("unable to notify ability user of error");
 					}
@@ -310,7 +308,7 @@ public abstract class CoreAbility implements Ability {
 				try {
 					abil.remove();
 				} catch (Exception e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 		}
@@ -321,7 +319,7 @@ public abstract class CoreAbility implements Ability {
 				try {
 					addon.stop();
 				} catch (Exception e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 
 			}
@@ -596,7 +594,7 @@ public abstract class CoreAbility implements Ability {
 				//Combos are no longer registered here. Since their combination is configurable, we need to do this after every single ability loads
 			} catch (Exception | Error e) {
 				plugin.getLogger().warning("The ability " + coreAbil.getName() + " was not able to load, if this message shows again please remove it!");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				ABILITIES_BY_NAME.remove(name.toLowerCase());
 				ABILITIES_BY_CLASS.remove(coreAbil.getClass());
 			}
@@ -686,11 +684,11 @@ public abstract class CoreAbility implements Ability {
 				}
 			} catch (Exception | Error e) {
 				plugin.getLogger().warning("The ability " + coreAbil.getName() + " was not able to load, if this message shows again please remove it!");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				try {
 					addon.stop();
 				} catch (Exception e1) {
-					e1.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e1.getMessage(), e1);
 				}
 				ABILITIES_BY_NAME.remove(name.toLowerCase());
 				ABILITIES_BY_CLASS.remove(coreAbil.getClass());
@@ -989,7 +987,7 @@ public abstract class CoreAbility implements Ability {
 					cache.getInitialValues().put(this, cache.getField().get(this));
 				}
 			} catch (IllegalAccessException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 			attributeValuesCached = true;
 		}
@@ -1028,7 +1026,7 @@ public abstract class CoreAbility implements Ability {
 				cache.getField().set(this, initialValue);
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				ProjectKorra.log.severe("Failed to recalculate attribute " + attribute + " for " + this.getName() + "!");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 

@@ -66,11 +66,11 @@ public class CopyCommand extends PKCommand {
 						ChatUtil.sendBrandingMessage(sender, ChatColor.RED + this.failedToBindAll);
 					}
 				}).exceptionally(ex -> {
-					ex.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, ex.getMessage(), ex);
 					return null;
 				});
 			}).exceptionally(ex -> {
-				ex.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, ex.getMessage(), ex);
 				return null;
 			});
 		} else if (args.size() == 2) {

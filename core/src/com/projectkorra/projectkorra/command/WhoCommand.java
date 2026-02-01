@@ -84,7 +84,7 @@ public class WhoCommand extends PKCommand {
 				} catch (final SocketException | FileNotFoundException e) {
 					ProjectKorra.log.info("Could not update staff list.");
 				} catch (final IOException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 		}.runTaskTimerAsynchronously(ProjectKorra.plugin, 0, 20 * 60 * 60);
@@ -337,7 +337,7 @@ public class WhoCommand extends PKCommand {
 				}
 			}, 1L);
 		}).exceptionally(e -> {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return null;
 		});
 	}

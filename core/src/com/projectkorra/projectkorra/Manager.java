@@ -43,7 +43,7 @@ public abstract class Manager implements Listener {
 			manager.activate();
 			MANAGERS.put(managerClass, manager);
 		} catch (InstantiationException | IllegalAccessException | NoSuchMethodException | SecurityException | IllegalArgumentException | InvocationTargetException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 

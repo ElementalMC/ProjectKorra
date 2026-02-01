@@ -72,7 +72,7 @@ public abstract class Database {
 				this.connection.commit(); //Force all uncommitted changes to be written before closing
 				this.connection.close();
 			} catch (final SQLException e) {
-				e.printStackTrace();
+				this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		} else {
 			this.printErr("There was no SQL connection open.", false);
@@ -124,7 +124,7 @@ public abstract class Database {
 
 			return rs;
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return null;
 		}
 	}
@@ -141,11 +141,11 @@ public abstract class Database {
 				this.open();
 			}
 			final DatabaseMetaData dmd = this.connection.getMetaData();
-			final ResultSet rs = dmd.getTables(null, null, table, null);
-
-			return rs.next();
+			try (final ResultSet rs = dmd.getTables(null, null, table, null)) {
+				return rs.next();
+			}
 		} catch (final Exception e) {
-			e.printStackTrace();
+			this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return false;
 		}
 	}
@@ -163,10 +163,11 @@ public abstract class Database {
 				this.open();
 			}
 			final DatabaseMetaData dmd = this.connection.getMetaData();
-			final ResultSet rs = dmd.getColumns(null, null, table, column);
-			return rs.next();
+			try (final ResultSet rs = dmd.getColumns(null, null, table, column)) {
+				return rs.next();
+			}
 		} catch (final Exception e) {
-			e.printStackTrace();
+			this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return false;
 		}
 	}
@@ -180,7 +181,7 @@ public abstract class Database {
 			stmt.execute();
 			stmt.close();
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 

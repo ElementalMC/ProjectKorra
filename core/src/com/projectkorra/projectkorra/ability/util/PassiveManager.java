@@ -7,14 +7,15 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.projectkorra.projectkorra.configuration.ConfigManager;
 import org.bukkit.entity.Player;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
+import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.PassiveAbility;
+import com.projectkorra.projectkorra.configuration.ConfigManager;
 
 public class PassiveManager {
 
@@ -50,7 +51,7 @@ public class PassiveManager {
 					final Object object = constructor.newInstance(player);
 					((CoreAbility) object).start();
 				} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 		}

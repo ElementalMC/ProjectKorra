@@ -48,7 +48,7 @@ public class AbilityLoader<T> {
 			this.jar = new JarFile(new File(s));
 
 		} catch (final IOException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 

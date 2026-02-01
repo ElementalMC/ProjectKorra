@@ -139,7 +139,7 @@ public class Element {
 			try {
 				this.color = ChatColor.of(value);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				this.color = ChatColor.WHITE;
 			}
 		}
@@ -161,7 +161,7 @@ public class Element {
 			try {
 				this.subColor = ChatColor.of(value);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 		return this.subColor != null ? this.subColor : ChatColor.WHITE;

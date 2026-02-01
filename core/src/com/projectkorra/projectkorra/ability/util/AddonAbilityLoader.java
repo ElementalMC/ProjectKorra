@@ -18,6 +18,7 @@ import sun.reflect.ReflectionFactory;
 
 import org.bukkit.plugin.Plugin;
 
+import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.event.AbilityLoadEvent;
 
 public class AddonAbilityLoader<T> {
@@ -45,7 +46,7 @@ public class AddonAbilityLoader<T> {
 			try {
 				urls.add(file.toURI().toURL());
 			} catch (final MalformedURLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 		this.loader = URLClassLoader.newInstance(urls.toArray(new URL[0]), plugin.getClass().getClassLoader());
@@ -103,7 +104,7 @@ public class AddonAbilityLoader<T> {
 
 				}
 			} catch (Exception | Error e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				this.plugin.getLogger().log(Level.WARNING, "Unknown cause");
 				this.plugin.getLogger().log(Level.WARNING, "The JAR file " + file.getName() + " failed to load");
 			} finally {
@@ -111,7 +112,7 @@ public class AddonAbilityLoader<T> {
 					try {
 						jarFile.close();
 					} catch (final IOException e) {
-						e.printStackTrace();
+						ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 					}
 				}
 			}
@@ -119,7 +120,7 @@ public class AddonAbilityLoader<T> {
 		try {
 			((URLClassLoader)loader).close();
 		} catch (IOException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 		return loadables;
 	}

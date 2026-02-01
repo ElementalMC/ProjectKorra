@@ -71,7 +71,7 @@ public class Updater {
 							}
 						}
 					} catch (final IOException e) {
-						e.printStackTrace();
+						ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 					}
 				} catch (final IOException e) {
 					plugin.getLogger().info("Could not connect to projectkorra.com");

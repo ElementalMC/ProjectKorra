@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.ability.util.MultiAbilityManager;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.object.Preset;
@@ -160,7 +161,7 @@ public class PresetCommand extends PKCommand {
 					ChatUtil.sendBrandingMessage(sender, ChatColor.RED + this.databaseError.replace("{name}", ChatColor.YELLOW + preset.getName() + ChatColor.RED));
 				}
 			}).exceptionally(e -> {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				return null;
 			});
 		} else if (Arrays.asList(bindaliases).contains(args.get(0)) && this.hasPermission(sender, "bind")) { // bending preset bind name.

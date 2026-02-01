@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
+import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent.Result;
@@ -79,7 +80,7 @@ public class AddCommand extends PKCommand {
 				}
 				this.add(sender, player, args.get(0).toLowerCase());
 			}).exceptionally(e -> {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				return null;
 			});
 		}
@@ -275,7 +276,7 @@ public class AddCommand extends PKCommand {
 				}
 			}
 		}).exceptionally(e -> {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return null;
 		});
 

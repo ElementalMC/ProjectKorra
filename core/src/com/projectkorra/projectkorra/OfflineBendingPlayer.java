@@ -142,8 +142,12 @@ public class OfflineBendingPlayer {
 
             PLAYERS.put(uuid, bPlayer);
 
-            final ResultSet rs2 = DBConnection.sql.readQuery("SELECT * FROM pk_players WHERE uuid = '" + uuid.toString() + "'");
-            try {
+            try (ResultSet rs2 = DBConnection.sql.readQuery("SELECT * FROM pk_players WHERE uuid = '" + uuid.toString() + "'")) {
+                if (rs2 == null) {
+                    LOADING.remove(uuid);
+                    future.cancel(true);
+                    return;
+                }
                 if (!rs2.next()) { // Data doesn't exist, we want a completely new player.
                     DBConnection.sql.modifyQuery("INSERT INTO pk_players (uuid, player, slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9) VALUES ('" + uuid.toString() + "', '" + offlinePlayer.getName() + "', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null')");
                     Bukkit.getScheduler().runTask(ProjectKorra.plugin, () -> ProjectKorra.log.info("Created new BendingPlayer for " + offlinePlayer.getName()));
@@ -405,7 +409,7 @@ public class OfflineBendingPlayer {
                                 bPlayer.cooldowns.put(name, new Cooldown(value, true));
                             }
                         } catch (final SQLException e) {
-                            e.printStackTrace();
+                            ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
                         }
                     }
 
@@ -425,7 +429,7 @@ public class OfflineBendingPlayer {
                        bPlayer.tempElements = elements;
                        bPlayer.tempSubElements = subElements;
                    } catch (SQLException e) {
-                       e.printStackTrace();
+                       ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
                    }
 
 
@@ -449,7 +453,7 @@ public class OfflineBendingPlayer {
                     });
                 }
             } catch (final SQLException | ExecutionException | InterruptedException ex) {
-                ex.printStackTrace();
+                ProjectKorra.log.log(java.util.logging.Level.WARNING, ex.getMessage(), ex);
                 LOADING.remove(uuid);
                 future.cancel(true);
             }
@@ -901,7 +905,7 @@ public class OfflineBendingPlayer {
                     DBConnection.sql.modifyQuery("INSERT INTO  pk_cooldowns (uuid, cooldown, value) VALUES ('" + this.uuid.toString() + "', '" + name + "', " + cooldown.getCooldown() + ")", false);
                 }
             } catch (final SQLException e) {
-                e.printStackTrace();
+                ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
             }
         }
     }

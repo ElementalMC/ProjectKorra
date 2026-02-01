@@ -77,6 +77,7 @@ public class TempBlock {
 	public TempBlock(final Block block, final BlockData newData, final long revertTime, final CoreAbility ability) {
 		this(block, newData, revertTime);
 		this.ability = Optional.of(ability);
+		this.suffocate = !(ability instanceof WaterAbility);
 	}
 	
 	public TempBlock(final Block block, final BlockData newData, final CoreAbility ability) {

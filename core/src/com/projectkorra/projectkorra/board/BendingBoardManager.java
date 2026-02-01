@@ -211,11 +211,12 @@ public final class BendingBoardManager {
 	public static void loadDisabledPlayers() {
 		Bukkit.getScheduler().runTaskAsynchronously(ProjectKorra.plugin, () -> {
 			Set<UUID> disabled = new HashSet<>();
-			try {
-				final ResultSet rs = DBConnection.sql.readQuery("SELECT uuid FROM pk_board WHERE enabled = 0");
-				while (rs.next()) disabled.add(UUID.fromString(rs.getString("uuid")));
+			try (ResultSet rs = DBConnection.sql.readQuery("SELECT uuid FROM pk_board WHERE enabled = 0")) {
+				if (rs != null) {
+					while (rs.next()) disabled.add(UUID.fromString(rs.getString("uuid")));
+				}
 			} catch (SQLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 			disabledPlayers.clear();
 			disabledPlayers.addAll(disabled);
@@ -244,7 +245,7 @@ public final class BendingBoardManager {
 				ps2.setString(1, uuid.toString());
 				ps2.execute();
 			} catch (SQLException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		});
 	}

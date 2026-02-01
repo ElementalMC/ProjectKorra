@@ -198,7 +198,7 @@ public class StatsCommand extends PKCommand {
 				}
 			}
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 		for (final Player player : ProjectKorra.plugin.getServer().getOnlinePlayers()) {
 			final UUID uuid = player.getUniqueId();

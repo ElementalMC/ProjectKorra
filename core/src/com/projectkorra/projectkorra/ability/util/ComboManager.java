@@ -74,7 +74,7 @@ public class ComboManager {
 					try {
 						ReflectionHandler.instantiateObject(clazz, player);
 					} catch (final Exception e) {
-						e.printStackTrace();
+						ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 					}
 				} else {
 					if (comboAbil.getComboType() instanceof ComboAbility) {
@@ -267,7 +267,7 @@ public class ComboManager {
 						ComboManager.getInstructions().put(ability.getName(), ability.getInstructions());
 					}
 				} catch (Error | Exception e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 		}

@@ -43,7 +43,7 @@ public class ConfigManager {
 		if (type == ConfigType.PRESETS) {
 			config = presetConfig.get();
 
-			final ArrayList<String> abilities = new ArrayList<String>();
+			final List<String> abilities = new ArrayList<>();
 			abilities.add("FireBlast");
 			abilities.add("AirBlast");
 			abilities.add("WaterManipulation");
@@ -569,7 +569,7 @@ public class ConfigManager {
 			config = defaultConfig.get();
 
 			final int mcVersion = GeneralMethods.getMCVersion();
-			final ArrayList<String> earthBlocks = new ArrayList<String>();
+			final List<String> earthBlocks = new ArrayList<>();
 
 			earthBlocks.add("#base_stone_nether"); // added in 1.16.2
 			earthBlocks.add("#base_stone_overworld"); // added in 1.16.2
@@ -616,7 +616,7 @@ public class ConfigManager {
 			earthBlocks.add("PODZOL");
 			earthBlocks.add("STONE_SLAB");
 
-			final ArrayList<String> metalBlocks = new ArrayList<String>();
+			final List<String> metalBlocks = new ArrayList<>();
 
 			if (mcVersion >= 1170) { //1.17
 				metalBlocks.add("#copper_ores");
@@ -670,18 +670,18 @@ public class ConfigManager {
 			metalBlocks.add("NETHER_QUARTZ_ORE");
 			metalBlocks.add("QUARTZ_BLOCK");
 
-			final ArrayList<String> sandBlocks = new ArrayList<String>();
+			final List<String> sandBlocks = new ArrayList<>();
 			sandBlocks.add("#sand");
 			sandBlocks.add("RED_SANDSTONE");
 			sandBlocks.add("RED_SANDSTONE_SLAB");
 			sandBlocks.add("SANDSTONE");
 			sandBlocks.add("SANDSTONE_SLAB");
 
-			final ArrayList<String> iceBlocks = new ArrayList<String>();
+			final List<String> iceBlocks = new ArrayList<>();
 			iceBlocks.add("#ice");
 
 			/* Dry biomes for FrostBreath */
-			final ArrayList<String> dryBiomes = new ArrayList<String>();
+			final List<String> dryBiomes = new ArrayList<>();
 			dryBiomes.add("DESERT");
 			dryBiomes.add("BADLANDS");
 			dryBiomes.add("ERODED_BADLANDS");
@@ -695,7 +695,7 @@ public class ConfigManager {
 			dryBiomes.add("NETHER_WASTES");
 			dryBiomes.add("SOUL_SAND_VALLEY");
 
-			final ArrayList<String> plantBlocks = new ArrayList<String>();
+			final List<String> plantBlocks = new ArrayList<>();
 			plantBlocks.add("#bee_growables");
 			plantBlocks.add("#flowers");
 			plantBlocks.add("#leaves");
@@ -741,11 +741,11 @@ public class ConfigManager {
 				plantBlocks.add("SPORE_BLOSSOM");
 			}
 
-			final ArrayList<String> snowBlocks = new ArrayList<>();
+			final List<String> snowBlocks = new ArrayList<>();
 			snowBlocks.add("#snow"); // added in 1.17
 
 			/*
-			final ArrayList<String> waterTransformableBlocks = new ArrayList<>();
+			final List<String> waterTransformableBlocks = new ArrayList<>();
 			waterTransformableBlocks.add("MUD>DIRT");
 			waterTransformableBlocks.add("PACKED_MUD>DIRT");
 			waterTransformableBlocks.add("MUDDY_MANGROVE_ROOTS>MANGROVE_ROOTS");
@@ -877,7 +877,7 @@ public class ConfigManager {
 
 			config.addDefault("Properties.Chi.CanBendWithWeapons", true);
 
-			final ArrayList<String> disabledWorlds = new ArrayList<String>();
+			final List<String> disabledWorlds = new ArrayList<>();
 			disabledWorlds.add("TestWorld");
 			disabledWorlds.add("TestWorld2");
 			config.addDefault("Properties.DisabledWorlds", disabledWorlds);
@@ -1381,7 +1381,7 @@ public class ConfigManager {
 			config.addDefault("Abilities.Earth.EarthTunnel.Revert", true);
 			config.addDefault("Abilities.Earth.EarthTunnel.DropLootIfNotRevert", false);
 
-			final ArrayList<String> earthTunnelIgnored = new ArrayList<String>();
+			final List<String> earthTunnelIgnored = new ArrayList<>();
 			earthTunnelIgnored.add(Material.COAL_ORE.toString()); // no longer needed in 1.17
 			earthTunnelIgnored.add(Material.IRON_ORE.toString()); // no longer needed in 1.17
 			earthTunnelIgnored.add(Material.REDSTONE_ORE.toString()); // no longer needed in 1.17

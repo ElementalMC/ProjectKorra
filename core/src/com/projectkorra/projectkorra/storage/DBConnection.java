@@ -59,7 +59,7 @@ public class DBConnection {
 						ProjectKorra.log.info("Database Updated.");
 					}
 				} catch (final SQLException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 			if (!sql.tableExists("pk_presets")) {
@@ -112,7 +112,7 @@ public class DBConnection {
 					}
 
 				} catch (final SQLException e) {
-					e.printStackTrace();
+					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				}
 			}
 			if (!sql.tableExists("pk_presets")) {
@@ -157,7 +157,7 @@ public class DBConnection {
 				rs.close();
 			} catch (final SQLException e) {
 				ProjectKorra.log.warning("Failed to get cooldown ids from database.");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 
 			//Get all player cooldowns from the database
@@ -214,7 +214,7 @@ public class DBConnection {
 				ProjectKorra.log.info("Finished converting old cooldowns to new cooldowns table!");
 			} catch (final SQLException e) {
 				ProjectKorra.log.warning("Failed to get cooldowns from database.");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 	}

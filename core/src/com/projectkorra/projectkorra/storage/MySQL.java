@@ -36,7 +36,7 @@ public class MySQL extends Database {
 		try {
 			this.log.info("Establishing MySQL Connection...");
 
-			Class.forName("com.mysql.jdbc.Driver");
+			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			if (this.properties != null && !this.properties.isEmpty()) {
 				this.properties = "?" + this.properties;
@@ -52,7 +52,7 @@ public class MySQL extends Database {
 			this.printErr("JDBC driver not found!", true);
 			return null;
 		} catch (final SQLException e) {
-			e.printStackTrace();
+			this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			this.printErr("MYSQL exception during connection.", true);
 			return null;
 		}

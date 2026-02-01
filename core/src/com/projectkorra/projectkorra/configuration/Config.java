@@ -43,7 +43,7 @@ public class Config {
 				save();
 			} catch (final Exception e) {
 				this.plugin.getLogger().info("Failed to generate directory!");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 
@@ -53,7 +53,7 @@ public class Config {
 				this.plugin.getLogger().info("Generating new " + this.file.getName() + "!");
 			} catch (final Exception e) {
 				this.plugin.getLogger().info("Failed to generate " + this.file.getName() + "!");
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 	}
@@ -76,7 +76,7 @@ public class Config {
 		try {
 			this.config.load(this.file);
 		} catch (final Exception e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 
@@ -90,7 +90,7 @@ public class Config {
 			this.config.options().copyDefaults(true);
 			this.config.save(this.file);
 		} catch (final Exception e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 	}
 }

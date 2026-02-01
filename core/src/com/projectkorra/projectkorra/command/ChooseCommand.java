@@ -14,6 +14,7 @@ import org.bukkit.entity.Player;
 import com.projectkorra.projectkorra.BendingPlayer;
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.Element.SubElement;
+import com.projectkorra.projectkorra.ProjectKorra;
 import com.projectkorra.projectkorra.configuration.ConfigManager;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent;
 import com.projectkorra.projectkorra.event.PlayerChangeElementEvent.Result;
@@ -143,7 +144,7 @@ public class ChooseCommand extends PKCommand {
 					ChatUtil.sendBrandingMessage(sender, ChatColor.RED + this.invalidElement);
 				}
 			}).exceptionally(e -> {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				return null;
 			});
 
@@ -241,7 +242,7 @@ public class ChooseCommand extends PKCommand {
 
 			}
 		}).exceptionally(e -> {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return null;
 		});
 	}

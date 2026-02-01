@@ -38,8 +38,10 @@ public class TempFallingBlock {
     public static void manage() {
         long time = System.currentTimeMillis();
 
-        for (TempFallingBlock tfb : instances.values()) {
-            if (tfb.canExpire() && time > tfb.getCreationTime() + 5000) {
+        for (TempFallingBlock tfb : new ArrayList<>(instances.values())) {
+            if (!tfb.getFallingBlock().isValid()) {
+                tfb.remove();
+            } else if (tfb.canExpire() && time > tfb.getCreationTime() + 5000) {
                 tfb.remove();
             } else if (time > tfb.getCreationTime() + 120000) { // Add a hard timeout for any abilities that misuse this.
                 tfb.remove();
@@ -66,7 +68,7 @@ public class TempFallingBlock {
     }
 
     public static void removeAllFallingBlocks() {
-        for (FallingBlock fallingblock : instances.keySet()) {
+        for (FallingBlock fallingblock : new ArrayList<>(instances.keySet())) {
             fallingblock.remove();
             instances.remove(fallingblock);
         }

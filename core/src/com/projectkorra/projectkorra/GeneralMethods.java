@@ -650,9 +650,7 @@ public class GeneralMethods {
 	}
 
 	public static String getCurrentDate() {
-		final DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-		final Date date = new Date();
-		return dateFormat.format(date);
+		return java.time.ZonedDateTime.now().format(java.time.format.DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm:ss"));
 	}
 
 	public static Vector getDirection(final Location location, final Location destination) {
@@ -1498,7 +1496,7 @@ public class GeneralMethods {
 			try {
 				Files.move(debugFile, new File(debugFile.getParentFile(), "debug_" + formatted + ".txt"));
 			} catch (IOException e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 				debugFile.delete();
 			}
 		}
@@ -1622,7 +1620,7 @@ public class GeneralMethods {
 				}
 			}
 		} catch (final IOException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 		}
 
 		f.add("");
@@ -1652,7 +1650,7 @@ public class GeneralMethods {
 
 			return true;
 		} catch (final IOException e) {
-			e.printStackTrace();
+			ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return false;
 		}
 	}

@@ -162,7 +162,7 @@ public class RegionProtection {
                     return true;
                 }
             } catch (Exception e) {
-                e.printStackTrace();
+                ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
             }
         }
         return false;

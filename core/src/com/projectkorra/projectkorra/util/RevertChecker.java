@@ -113,7 +113,7 @@ public class RevertChecker implements Runnable {
 					}
 				}
 			} catch (final Exception e) {
-				e.printStackTrace();
+				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 		}
 	}
