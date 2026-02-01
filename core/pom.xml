@@ -95,6 +95,11 @@
       <id>william278.net</id>
       <url>https://repo.william278.net/releases</url>
     </repository>
+    <!-- Kyori (event-api SNAPSHOTs / Sonatype snapshots) -->
+    <repository>
+      <id>central-snapshots</id>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+    </repository>
   </repositories>
 
   <dependencies>
@@ -256,7 +261,14 @@
       <artifactId>huskclaims-bukkit</artifactId>
       <version>1.5.10</version>
       <scope>provided</scope>
-  </dependency>
+    </dependency>
+    <!-- Kyori event-api: override GriefDefender's 5.0.0-SNAPSHOT with released version from Maven Central -->
+    <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>event-api</artifactId>
+      <version>3.0.0</version>
+      <scope>provided</scope>
+    </dependency>
   </dependencies>
   <build>
     <defaultGoal>clean package install</defaultGoal>
@@ -278,8 +290,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <source>21</source>
-          <target>21</target>
+          <release>21</release>
         </configuration>
       </plugin>
       <plugin>
