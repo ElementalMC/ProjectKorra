@@ -95,9 +95,20 @@
       <id>william278.net</id>
       <url>https://repo.william278.net/releases</url>
     </repository>
+    <!-- Kyori (event-api) -->
+    <repository>
+      <id>opencollab-snapshot</id>
+      <url>https://repo.opencollab.dev/main/</url>
+    </repository>
   </repositories>
 
   <dependencies>
+  <!-- event-api -->
+  <dependency>
+      <groupId>net.kyori</groupId>
+      <artifactId>event-api</artifactId>
+      <version>3.0.0</version>
+  </dependency>
     <dependency>
       <groupId>com.projectkorra</groupId>
       <artifactId>core-modern</artifactId>
@@ -278,8 +289,7 @@
         <artifactId>maven-compiler-plugin</artifactId>
         <version>3.13.0</version>
         <configuration>
-          <source>21</source>
-          <target>21</target>
+          <release>21</release>
         </configuration>
       </plugin>
       <plugin>
