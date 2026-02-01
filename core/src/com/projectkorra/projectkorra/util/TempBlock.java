@@ -17,6 +17,7 @@ import com.projectkorra.projectkorra.ability.Ability;
 import com.projectkorra.projectkorra.ability.CoreAbility;
 import com.projectkorra.projectkorra.ability.FireAbility;
 import com.projectkorra.projectkorra.ability.WaterAbility;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.World;
@@ -37,7 +38,7 @@ import io.papermc.lib.PaperLib;
 
 public class TempBlock {
 
-	private static final Map<Block, LinkedList<TempBlock>> instances_ = new HashMap<>();
+	private static final Map<Block, LinkedList<TempBlock>> instances_ = new ConcurrentHashMap<>();
 	/**
 	 * Marked for removal. Doesn't do anything right now
 	 */
@@ -336,14 +337,17 @@ public class TempBlock {
 	 */
 	private void trueRevertBlock(boolean removeFromQueue) {
 		this.reverted = true;
-		if (instances_.containsKey(this.block)) {
-			PaperLib.getChunkAtAsync(this.block.getLocation()).thenAccept(result -> {
-				TempBlock last = instances_.get(this.block).getLast();
-				this.block.setBlockData(last.newData); //Set the block to the next in line TempBlock
+		final boolean hasStack = instances_.containsKey(this.block);
+		PaperLib.getChunkAtAsync(this.block.getLocation()).thenAccept(result -> {
+			Bukkit.getScheduler().runTask(ProjectKorra.plugin, () -> {
+				if (hasStack && instances_.containsKey(this.block)) {
+					TempBlock last = instances_.get(this.block).getLast();
+					this.block.setBlockData(last.newData); //Set the block to the next in line TempBlock
+				} else if (!hasStack) {
+					revertState();
+				}
 			});
-		} else { //Set to the original blockstate
-			PaperLib.getChunkAtAsync(this.block.getLocation()).thenAccept(result -> revertState());
-		}
+		});
 
 		if (removeFromQueue) { //Remove from the queue if it's in there. We only do this when required because it is an intensive action due to the collection type
 			REVERT_QUEUE.remove(this);

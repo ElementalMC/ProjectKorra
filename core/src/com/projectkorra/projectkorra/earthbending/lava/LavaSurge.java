@@ -119,7 +119,9 @@ public class LavaSurge extends LavaAbility {
 
 		try {
 			targetLocation = GeneralMethods.getTargetedEntity(this.player, this.travelRange * 2, null).getLocation();
-		} catch (final NullPointerException e) {}
+		} catch (final NullPointerException e) {
+			com.projectkorra.projectkorra.ProjectKorra.log.log(java.util.logging.Level.FINE, "LavaSurge NPE (expected in some edge cases)", e);
+		}
 
 		if (targetLocation == null) {
 			this.remove();

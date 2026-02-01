@@ -83,7 +83,8 @@ public class Metrics {
 					.copyDefaults(true);
 			try {
 				config.save(configFile);
-			} catch (IOException ignored) {
+			} catch (IOException e) {
+				com.projectkorra.projectkorra.ProjectKorra.log.log(java.util.logging.Level.WARNING, "Metrics config load", e);
 			}
 		}
 		// Load the data

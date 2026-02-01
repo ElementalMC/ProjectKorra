@@ -79,7 +79,9 @@ public class ComboUtil {
         try {
             ClickType type = ClickType.valueOf(string.toUpperCase());
             if (type != ClickType.CUSTOM) return type;
-        } catch (IllegalArgumentException ignored) {}
+        } catch (IllegalArgumentException e) {
+            com.projectkorra.projectkorra.ProjectKorra.log.log(java.util.logging.Level.FINE, "ComboUtil parse", e);
+        }
 
         switch (string.toUpperCase().replaceAll("[_ ]", "")) {
             case "CLICK":

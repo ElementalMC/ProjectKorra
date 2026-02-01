@@ -2,17 +2,18 @@ package com.projectkorra.projectkorra.util;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.bukkit.entity.LivingEntity;
 import org.bukkit.potion.PotionEffect;
 
 public class TempPotionEffect {
 
-	private static Map<LivingEntity, TempPotionEffect> instances = new ConcurrentHashMap<LivingEntity, TempPotionEffect>();
+	private static Map<LivingEntity, TempPotionEffect> instances = new ConcurrentHashMap<>();
 	private static final long tick = 21;
 
-	private int ID = Integer.MIN_VALUE;
-	private final Map<Integer, PotionInfo> infos = new ConcurrentHashMap<Integer, PotionInfo>();
+	private final AtomicLong nextId = new AtomicLong(0);
+	private final Map<Long, PotionInfo> infos = new ConcurrentHashMap<>();
 	private final LivingEntity entity;
 
 	public TempPotionEffect(final LivingEntity entity, final PotionEffect effect) {
@@ -23,10 +24,10 @@ public class TempPotionEffect {
 		this.entity = entity;
 		if (instances.containsKey(entity)) {
 			final TempPotionEffect instance = instances.get(entity);
-			instance.infos.put(instance.ID++, new PotionInfo(starttime, effect));
+			instance.infos.put(instance.nextId.getAndIncrement(), new PotionInfo(starttime, effect));
 			instances.put(entity, instance);
 		} else {
-			this.infos.put(this.ID++, new PotionInfo(starttime, effect));
+			this.infos.put(this.nextId.getAndIncrement(), new PotionInfo(starttime, effect));
 			instances.put(entity, this);
 		}
 	}
@@ -76,9 +77,9 @@ public class TempPotionEffect {
 	}
 
 	private void progress() {
-		for (final int id : this.infos.keySet()) {
+		for (final Long id : this.infos.keySet()) {
 			final PotionInfo info = this.infos.get(id);
-			if (info.getTime() < System.currentTimeMillis()) {
+			if (info != null && info.getTime() < System.currentTimeMillis()) {
 				this.addEffect(info.getEffect());
 				this.infos.remove(id);
 			}

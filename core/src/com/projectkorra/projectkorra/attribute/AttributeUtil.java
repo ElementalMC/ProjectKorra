@@ -46,7 +46,9 @@ public class AttributeUtil {
 
                 return Pair.of(modifier, value);
 
-            } catch (NumberFormatException ignored) {}
+            } catch (NumberFormatException e) {
+                com.projectkorra.projectkorra.ProjectKorra.log.log(java.util.logging.Level.FINE, "AttributeUtil parse", e);
+            }
         }
         return null;
     }

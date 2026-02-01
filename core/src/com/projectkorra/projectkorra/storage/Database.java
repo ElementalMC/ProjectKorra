@@ -96,15 +96,27 @@ public abstract class Database {
 	 * @param async If to run asynchronously
 	 */
 	public void modifyQuery(final String query, final boolean async) {
+		modifyQuery(query, async, (Object[]) null);
+	}
+
+	/**
+	 * Queries the Database with parameters (PreparedStatement) to avoid SQL injection.
+	 *
+	 * @param query Query with ? placeholders
+	 * @param async If to run asynchronously
+	 * @param params Parameters to bind (in order)
+	 */
+	public void modifyQuery(final String query, final boolean async, final Object... params) {
 		if (async) {
+			final Object[] p = params;
 			new BukkitRunnable() {
 				@Override
 				public void run() {
-					Database.this.doQuery(query);
+					Database.this.doQuery(query, p);
 				}
 			}.runTaskAsynchronously(ProjectKorra.plugin);
 		} else {
-			this.doQuery(query);
+			this.doQuery(query, params);
 		}
 	}
 
@@ -115,14 +127,28 @@ public abstract class Database {
 	 * @return Result set of ran query
 	 */
 	public ResultSet readQuery(final String query) {
+		return readQuery(query, (Object[]) null);
+	}
+
+	/**
+	 * Queries the Database with parameters (PreparedStatement) to avoid SQL injection.
+	 *
+	 * @param query Query with ? placeholders
+	 * @param params Parameters to bind (in order)
+	 * @return Result set of ran query, or null on error
+	 */
+	public ResultSet readQuery(final String query, final Object... params) {
 		try {
 			if (this.connection == null || this.connection.isClosed()) {
 				this.open();
 			}
 			final PreparedStatement stmt = this.connection.prepareStatement(query);
-			final ResultSet rs = stmt.executeQuery();
-
-			return rs;
+			if (params != null) {
+				for (int i = 0; i < params.length; i++) {
+					stmt.setObject(i + 1, params[i]);
+				}
+			}
+			return stmt.executeQuery();
 		} catch (final SQLException e) {
 			this.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			return null;
@@ -173,11 +199,20 @@ public abstract class Database {
 	}
 
 	private synchronized void doQuery(final String query) {
+		doQuery(query, (Object[]) null);
+	}
+
+	private synchronized void doQuery(final String query, final Object... params) {
 		try {
 			if (this.connection == null || this.connection.isClosed()) {
 				this.open();
 			}
 			final PreparedStatement stmt = this.connection.prepareStatement(query);
+			if (params != null) {
+				for (int i = 0; i < params.length; i++) {
+					stmt.setObject(i + 1, params[i]);
+				}
+			}
 			stmt.execute();
 			stmt.close();
 		} catch (final SQLException e) {

@@ -142,14 +142,14 @@ public class OfflineBendingPlayer {
 
             PLAYERS.put(uuid, bPlayer);
 
-            try (ResultSet rs2 = DBConnection.sql.readQuery("SELECT * FROM pk_players WHERE uuid = '" + uuid.toString() + "'")) {
+            try (ResultSet rs2 = DBConnection.sql.readQuery("SELECT * FROM pk_players WHERE uuid = ?", uuid.toString())) {
                 if (rs2 == null) {
                     LOADING.remove(uuid);
                     future.cancel(true);
                     return;
                 }
                 if (!rs2.next()) { // Data doesn't exist, we want a completely new player.
-                    DBConnection.sql.modifyQuery("INSERT INTO pk_players (uuid, player, slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9) VALUES ('" + uuid.toString() + "', '" + offlinePlayer.getName() + "', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null')");
+                    DBConnection.sql.modifyQuery("INSERT INTO pk_players (uuid, player, slot1, slot2, slot3, slot4, slot5, slot6, slot7, slot8, slot9) VALUES (?, ?, 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null', 'null')", false, uuid.toString(), offlinePlayer.getName());
                     Bukkit.getScheduler().runTask(ProjectKorra.plugin, () -> ProjectKorra.log.info("Created new BendingPlayer for " + offlinePlayer.getName()));
                     OfflineBendingPlayer newPlayer;
                     if (offlinePlayer.isOnline()) {
@@ -175,7 +175,7 @@ public class OfflineBendingPlayer {
                     // The player has at least played before.
                     final String player2 = rs2.getString("player");
                     if (!offlinePlayer.getName().equalsIgnoreCase(player2)) {
-                        DBConnection.sql.modifyQuery("UPDATE pk_players SET player = '" + offlinePlayer.getName() + "' WHERE uuid = '" + uuid.toString() + "'");
+                        DBConnection.sql.modifyQuery("UPDATE pk_players SET player = ? WHERE uuid = ?", false, offlinePlayer.getName(), uuid.toString());
                         // They have changed names.
                         ProjectKorra.log.info("Updating Player Name for " + offlinePlayer.getName());
                     }

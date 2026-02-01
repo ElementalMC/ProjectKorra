@@ -92,7 +92,9 @@ public class StatsCommand extends PKCommand {
 			int page = 1;
 			try {
 				page = Integer.parseInt(args.get(3));
-			} catch (IndexOutOfBoundsException | NumberFormatException e) {}
+			} catch (IndexOutOfBoundsException | NumberFormatException e) {
+				com.projectkorra.projectkorra.ProjectKorra.log.log(java.util.logging.Level.FINE, "StatsCommand parse", e);
+			}
 			final Object o = object;
 			final int p = page;
 			new BukkitRunnable() {

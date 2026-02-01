@@ -20,7 +20,7 @@ import com.projectkorra.projectkorra.ability.CoreAbility;
 public class TempArmor {
 
 	private static Map<LivingEntity, PriorityQueue<TempArmor>> INSTANCES = new ConcurrentHashMap<>();
-	private static Map<LivingEntity, ItemStack[]> ORIGINAL = new HashMap<>();
+	private static Map<LivingEntity, ItemStack[]> ORIGINAL = new ConcurrentHashMap<>();
 	private static long defaultDuration = 30000L;
 
 	private LivingEntity entity;

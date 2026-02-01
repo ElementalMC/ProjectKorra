@@ -1,5 +1,6 @@
 package com.projectkorra.projectkorra.util;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -35,16 +36,24 @@ public class RevertChecker implements Runnable {
 	}
 
 	public static void revertAirBlocks() {
-		for (final int ID : airRevertQueue.keySet()) {
-			PaperLib.getChunkAtAsync(EarthAbility.getTempAirLocations().get(ID).getState().getBlock().getLocation()).thenAccept(result -> EarthAbility.revertAirBlock(ID));
-			RevertChecker.airRevertQueue.remove(ID);
+		for (final int ID : new ArrayList<>(airRevertQueue.keySet())) {
+			PaperLib.getChunkAtAsync(EarthAbility.getTempAirLocations().get(ID).getState().getBlock().getLocation()).thenAccept(result -> {
+				ProjectKorra.plugin.getServer().getScheduler().runTask(ProjectKorra.plugin, () -> {
+					EarthAbility.revertAirBlock(ID);
+					airRevertQueue.remove(ID);
+				});
+			});
 		}
 	}
 
 	public static void revertEarthBlocks() {
-		for (final Block block : earthRevertQueue.keySet()) {
-			PaperLib.getChunkAtAsync(block.getLocation()).thenAccept(result -> EarthAbility.revertBlock(block));
-			earthRevertQueue.remove(block);
+		for (final Block block : new ArrayList<>(earthRevertQueue.keySet())) {
+			PaperLib.getChunkAtAsync(block.getLocation()).thenAccept(result -> {
+				ProjectKorra.plugin.getServer().getScheduler().runTask(ProjectKorra.plugin, () -> {
+					EarthAbility.revertBlock(block);
+					earthRevertQueue.remove(block);
+				});
+			});
 		}
 	}
 

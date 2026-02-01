@@ -1614,9 +1614,13 @@ public class GeneralMethods {
 									if (map.size() > 0)
 										f.add(simpleName + ": " + field.getName() + " size=" + map.size());
 								}
-							} catch (final Exception ignored) {}
+							} catch (final Exception e) {
+								ProjectKorra.log.log(java.util.logging.Level.FINEST, "Debug reflection field", e);
+							}
 						}
-					}  catch (Exception ignored) {}
+					} catch (Exception e) {
+						ProjectKorra.log.log(java.util.logging.Level.FINEST, "Debug reflection class", e);
+					}
 				}
 			}
 		} catch (final IOException e) {
