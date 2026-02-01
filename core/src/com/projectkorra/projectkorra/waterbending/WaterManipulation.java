@@ -303,7 +303,7 @@ public class WaterManipulation extends WaterAbility {
 
 				if (!this.displacing) {
 					for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, this.collisionRadius)) {
-						if (entity instanceof LivingEntity && entity.getEntityId() != this.player.getEntityId()) {
+						if (entity instanceof LivingEntity && !entity.getUniqueId().equals(this.player.getUniqueId())) {
 							if (RegionProtection.isRegionProtected(this.player, entity.getLocation(), "WaterManipulation") || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 								continue;
 							}

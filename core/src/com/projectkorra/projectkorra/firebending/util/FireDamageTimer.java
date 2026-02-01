@@ -38,7 +38,7 @@ public class FireDamageTimer {
 	}
 
 	public FireDamageTimer(final Entity entity, final Player source, Ability abil, final boolean affectSelf) {
-		if (entity.getEntityId() == source.getEntityId() && !affectSelf) {
+		if (entity.getUniqueId().equals(source.getUniqueId()) && !affectSelf) {
 			return;
 		}
 

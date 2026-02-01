@@ -59,20 +59,20 @@ public class TempPotionEffect {
 				} else {
 					if (peffect.getDuration() > effect.getDuration()) {
 						this.entity.removePotionEffect(peffect.getType());
-						this.entity.addPotionEffect(effect);
+						effect.apply(this.entity);
 						final int dt = peffect.getDuration() - effect.getDuration();
 						final PotionEffect neweffect = new PotionEffect(peffect.getType(), dt, peffect.getAmplifier());
 						new TempPotionEffect(this.entity, neweffect, System.currentTimeMillis() + effect.getDuration() * tick);
 						return;
 					} else {
 						this.entity.removePotionEffect(peffect.getType());
-						this.entity.addPotionEffect(effect);
+						effect.apply(this.entity);
 						return;
 					}
 				}
 			}
 		}
-		this.entity.addPotionEffect(effect);
+		effect.apply(this.entity);
 	}
 
 	private void progress() {

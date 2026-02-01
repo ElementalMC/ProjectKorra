@@ -194,13 +194,13 @@ public class Suffocate extends AirAbility {
 				final BukkitRunnable br2 = new BukkitRunnable() {
 					@Override
 					public void run() {
-						target.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, (int) (Suffocate.this.slowRepeat * 20), (int) Suffocate.this.slow));
+						new PotionEffect(PotionEffectType.SLOW, (int) (Suffocate.this.slowRepeat * 20), (int) Suffocate.this.slow).apply(target);
 					}
 				};
 				final BukkitRunnable br3 = new BukkitRunnable() {
 					@Override
 					public void run() {
-						target.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, (int) (Suffocate.this.blindRepeat * 20), (int) Suffocate.this.blind));
+						new PotionEffect(PotionEffectType.BLINDNESS, (int) (Suffocate.this.blindRepeat * 20), (int) Suffocate.this.blind).apply(target);
 					}
 				};
 

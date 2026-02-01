@@ -199,7 +199,7 @@ public class LavaSurgeWave extends LavaAbility {
 				boolean knockback = false;
 				for (final Block block : this.waveBlocks.keySet()) {
 					if (entity.getLocation().distanceSquared(block.getLocation()) <= 2 * 2) {
-						if (entity.getEntityId() != this.player.getEntityId() || this.canHitSelf) {
+						if (!entity.getUniqueId().equals(this.player.getUniqueId()) || this.canHitSelf) {
 							knockback = true;
 						}
 					}

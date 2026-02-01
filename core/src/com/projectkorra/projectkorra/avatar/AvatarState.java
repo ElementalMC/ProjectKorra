@@ -178,7 +178,7 @@ public class AvatarState extends AvatarAbility {
 	private void addProgressPotionEffect(final PotionEffectType effect, final int power) {
 		if (!this.player.hasPotionEffect(effect) || this.player.getPotionEffect(effect).getAmplifier() < power
 				|| (this.player.getPotionEffect(effect).getAmplifier() == power && this.player.getPotionEffect(effect).getDuration() == 1)) {
-			this.player.addPotionEffect(new PotionEffect(effect, 30, power, true, false), true);
+			new PotionEffect(effect, 30, power, true, false).apply(this.player);
 		}
 	}
 

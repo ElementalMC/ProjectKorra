@@ -229,7 +229,7 @@ public class FlightMultiAbility extends FlightAbility implements MultiAbility {
 				this.prevDir = this.player.getEyeLocation().getDirection().clone();
 
 				for (final Entity e : GeneralMethods.getEntitiesAroundPoint(this.player.getLocation(), this.speed)) {
-					if (e instanceof LivingEntity && e.getEntityId() != this.player.getEntityId() && !this.player.getPassengers().contains(e)) {
+					if (e instanceof LivingEntity && !e.getUniqueId().equals(this.player.getUniqueId()) && !this.player.getPassengers().contains(e)) {
 						if (!GeneralMethods.isRegionProtectedFromBuild(this.player, e.getLocation())) {
 							final LivingEntity le = (LivingEntity) e;
 							DamageHandler.damageEntity(le, this.speed / 2, this);

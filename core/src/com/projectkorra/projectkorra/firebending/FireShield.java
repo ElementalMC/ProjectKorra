@@ -144,7 +144,7 @@ public class FireShield extends FireAbility {
 				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
 					continue;
 				} else if (entity instanceof LivingEntity) {
-					if (this.player.getEntityId() != entity.getEntityId() && this.ignite) {
+					if (!this.player.getUniqueId().equals(entity.getUniqueId()) && this.ignite) {
 						entity.setFireTicks((int) (this.shieldFireTicks * 20));
 						new FireDamageTimer(entity, this.player, this);
 					}
@@ -180,7 +180,7 @@ public class FireShield extends FireAbility {
 				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
 					continue;
 				} else if (entity instanceof LivingEntity) {
-					if (this.player.getEntityId() != entity.getEntityId() && this.ignite) {
+					if (!this.player.getUniqueId().equals(entity.getUniqueId()) && this.ignite) {
 						entity.setFireTicks((int) (this.discFireTicks * 20));
 						new FireDamageTimer(entity, this.player, this);
 					}

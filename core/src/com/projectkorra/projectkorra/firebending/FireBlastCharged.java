@@ -221,7 +221,7 @@ public class FireBlastCharged extends FireAbility {
 
 		boolean exploded = false;
 		for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, this.collisionRadius)) {
-			if (entity.getEntityId() == this.player.getEntityId() || GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
+			if (entity.getUniqueId().equals(this.player.getUniqueId()) || GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
 				continue;
 			}
 			entity.setFireTicks((int) (this.fireTicks * 20));

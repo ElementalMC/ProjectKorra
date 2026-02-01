@@ -193,7 +193,7 @@ public class IceSpikeBlast extends IceAbility {
 			}
 
 			for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, this.collisionRadius + 0.5)) {
-				if (entity.getEntityId() != this.player.getEntityId() && entity instanceof LivingEntity) {
+				if (!entity.getUniqueId().equals(this.player.getUniqueId()) && entity instanceof LivingEntity) {
 					this.affect((LivingEntity) entity);
 					this.progressing = false;
 					this.returnWater();

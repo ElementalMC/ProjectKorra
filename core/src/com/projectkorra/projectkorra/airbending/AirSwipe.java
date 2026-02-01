@@ -228,7 +228,7 @@ public class AirSwipe extends AirAbility {
 					if (GeneralMethods.isRegionProtectedFromBuild(AirSwipe.this, entity.getLocation())) {
 						return;
 					}
-					if (entity.getEntityId() != AirSwipe.this.player.getEntityId() && entity instanceof LivingEntity) {
+					if (!entity.getUniqueId().equals(AirSwipe.this.player.getUniqueId()) && entity instanceof LivingEntity) {
 						if (entity instanceof Player) {
 							if (Commands.invincible.contains(((Player) entity).getName())) {
 								return;
@@ -244,7 +244,7 @@ public class AirSwipe extends AirAbility {
 							AirSwipe.this.affectedEntities.add(entity);
 						}
 						breakBreathbendingHold(entity);
-					} else if (entity.getEntityId() != AirSwipe.this.player.getEntityId() && !(entity instanceof LivingEntity)) {
+					} else if (!entity.getUniqueId().equals(AirSwipe.this.player.getUniqueId()) && !(entity instanceof LivingEntity)) {
 						GeneralMethods.setVelocity(AirSwipe.this, entity, fDirection.multiply(AirSwipe.this.pushFactor));
 					}
 				}

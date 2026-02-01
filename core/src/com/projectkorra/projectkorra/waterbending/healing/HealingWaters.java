@@ -179,7 +179,7 @@ public class HealingWaters extends HealingAbility {
 	private void heal(final Player player) {
 		final Entity target = GeneralMethods.getTargetedEntity(player, this.range);
 		if (target != null && this.target != null && target instanceof LivingEntity) {
-			if (this.target.getEntityId() == target.getEntityId() && this.hasReached) {
+			if (this.target.getUniqueId().equals(target.getUniqueId()) && this.hasReached) {
 				this.giveHP(this.target);
 			}
 		} else {
@@ -223,7 +223,7 @@ public class HealingWaters extends HealingAbility {
 
 	private void applyHealing(final Player player) {
 		if (!RegionProtection.isRegionProtected(player, player.getLocation(), "HealingWaters")) {
-			player.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 30, this.potionPotency));
+			new PotionEffect(PotionEffectType.REGENERATION, 30, this.potionPotency).apply(player);
 			AirAbility.breakBreathbendingHold(player);
 			this.healing = true;
 			this.healingSelf = true;
@@ -232,7 +232,7 @@ public class HealingWaters extends HealingAbility {
 
 	private void applyHealing(final LivingEntity livingEntity) {
 		if (livingEntity.getHealth() < livingEntity.getAttribute(org.bukkit.attribute.Attribute.GENERIC_MAX_HEALTH).getValue()) {
-			livingEntity.addPotionEffect(new PotionEffect(PotionEffectType.REGENERATION, 30, this.potionPotency));
+			new PotionEffect(PotionEffectType.REGENERATION, 30, this.potionPotency).apply(livingEntity);
 			AirAbility.breakBreathbendingHold(livingEntity);
 			this.healing = true;
 			this.healingSelf = false;

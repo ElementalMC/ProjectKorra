@@ -82,7 +82,7 @@ public class AirScooter extends AirAbility {
 				this.slime.setSize(1);
 				this.slime.setSilent(true);
 				this.slime.setInvulnerable(true);
-				this.slime.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false));
+				new PotionEffect(PotionEffectType.INVISIBILITY, Integer.MAX_VALUE, 1, true, false).apply(this.slime);
 				this.slime.addPassenger(player);
 			} else {
 				this.useslime = false;

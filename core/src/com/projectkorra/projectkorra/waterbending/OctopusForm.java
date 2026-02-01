@@ -198,7 +198,7 @@ public class OctopusForm extends WaterAbility {
 
 	private void affect(final Location location) {
 		for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(location, this.attackRange)) {
-			if (entity.getEntityId() == this.player.getEntityId()) {
+			if (entity.getUniqueId().equals(this.player.getUniqueId())) {
 				continue;
 			} else if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation())) {
 				continue;

@@ -1,7 +1,5 @@
 package com.projectkorra.projectkorra.chiblocking;
 
-import com.projectkorra.projectkorra.ability.CoreAbility;
-import com.projectkorra.projectkorra.ability.StanceAbility;
 import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
@@ -10,6 +8,8 @@ import org.bukkit.potion.PotionEffectType;
 
 import com.projectkorra.projectkorra.Element;
 import com.projectkorra.projectkorra.ability.ChiAbility;
+import com.projectkorra.projectkorra.ability.CoreAbility;
+import com.projectkorra.projectkorra.ability.StanceAbility;
 import com.projectkorra.projectkorra.attribute.Attribute;
 
 public class WarriorStance extends ChiAbility implements StanceAbility {
@@ -57,10 +57,10 @@ public class WarriorStance extends ChiAbility implements StanceAbility {
 		}
 
 		if (!this.player.hasPotionEffect(PotionEffectType.DAMAGE_RESISTANCE) || this.player.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE).getAmplifier() > this.resistance || (this.player.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE).getAmplifier() == this.resistance && this.player.getPotionEffect(PotionEffectType.DAMAGE_RESISTANCE).getDuration() == 1)) { //special case for negative resistance
-			this.player.addPotionEffect(new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10, this.resistance, true, false), true);
+			new PotionEffect(PotionEffectType.DAMAGE_RESISTANCE, 10, this.resistance, true, false).apply(this.player);
 		}
 		if (!this.player.hasPotionEffect(PotionEffectType.INCREASE_DAMAGE) || this.player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getAmplifier() < this.strength || (this.player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getAmplifier() == this.strength && this.player.getPotionEffect(PotionEffectType.INCREASE_DAMAGE).getDuration() == 1)) {
-			this.player.addPotionEffect(new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10, this.strength, true, false), true);
+			new PotionEffect(PotionEffectType.INCREASE_DAMAGE, 10, this.strength, true, false).apply(this.player);
 		}
 	}
 
@@ -76,7 +76,6 @@ public class WarriorStance extends ChiAbility implements StanceAbility {
 		}
 	}
 
-	@Override
 	public String getName() {
 		return "WarriorStance";
 	}

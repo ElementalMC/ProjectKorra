@@ -172,7 +172,7 @@ public class EarthGrab extends EarthAbility {
 		ParticleEffect.BLOCK_DUST.display(this.origin, 27, 0.2, 0.5, 0.2, this.origin.getBlock().getRelative(BlockFace.DOWN).getBlockData());
 		playEarthbendingSound(this.origin);
 		for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.origin, 1)) {
-			if (entity instanceof LivingEntity && entity.getEntityId() != this.player.getEntityId() && this.isEarthbendable(entity.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
+			if (entity instanceof LivingEntity && !entity.getUniqueId().equals(this.player.getUniqueId()) && this.isEarthbendable(entity.getLocation().getBlock().getRelative(BlockFace.DOWN))) {
 				if (entity instanceof Player && BendingPlayer.getBendingPlayer((Player) entity) != null) {
 					if (CoreAbility.hasAbility((Player) entity, AvatarState.class)) {
 						continue;

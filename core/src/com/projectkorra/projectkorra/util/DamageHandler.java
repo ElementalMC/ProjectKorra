@@ -29,11 +29,12 @@ import org.jetbrains.annotations.NotNull;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 public class DamageHandler {
 
-	// Armor percentage
-	private static final HashMap<Integer, Double> ARMOR_PERCENTAGE_BY_ENTITY_ID = new HashMap<>();
+	// Armor percentage (keyed by entity UUID for 1.21+ compatibility; getEntityId() was deprecated/removed)
+	private static final HashMap<UUID, Double> ARMOR_PERCENTAGE_BY_ENTITY_ID = new HashMap<>();
 	private static final String IGNORE_ARMOR_PREFIX = "Properties.IgnoreArmorPercentage.";
 	private static final Set<LivingEntity> BEING_DAMAGED = new HashSet<>();
 
@@ -49,7 +50,7 @@ public class DamageHandler {
 	 * @return If this damage event should be call-backed to {@link #entityDamageCallback(EntityDamageEvent)}.
 	 */
 	public static boolean ignoreArmor(@NotNull Entity entity) {
-		return ARMOR_PERCENTAGE_BY_ENTITY_ID.containsKey(entity.getEntityId());
+		return ARMOR_PERCENTAGE_BY_ENTITY_ID.containsKey(entity.getUniqueId());
 	}
 
 	/**
@@ -100,7 +101,7 @@ public class DamageHandler {
 	 * @param percentage The percentage to be ignored (1.0 meaning no armor, 0.0 meaning full armor)
 	 */
 	private static void ignorePercentageArmorDamage(LivingEntity lent, double percentage) {
-		ARMOR_PERCENTAGE_BY_ENTITY_ID.put(lent.getEntityId(), percentage);
+		ARMOR_PERCENTAGE_BY_ENTITY_ID.put(lent.getUniqueId(), percentage);
 	}
 
 	/**
@@ -120,9 +121,10 @@ public class DamageHandler {
 	 * @param event The event we want to modify
 	 */
 	public static void entityDamageCallback(EntityDamageEvent event) {
-		if (!ARMOR_PERCENTAGE_BY_ENTITY_ID.containsKey(event.getEntity().getEntityId())) return;
-		double ignorePercentage = ARMOR_PERCENTAGE_BY_ENTITY_ID.get(event.getEntity().getEntityId());
-		ARMOR_PERCENTAGE_BY_ENTITY_ID.remove(event.getEntity().getEntityId()); // We get rid of the entry, so it doesn't call back future non-ability related damage.
+		UUID entityId = event.getEntity().getUniqueId();
+		if (!ARMOR_PERCENTAGE_BY_ENTITY_ID.containsKey(entityId)) return;
+		double ignorePercentage = ARMOR_PERCENTAGE_BY_ENTITY_ID.get(entityId);
+		ARMOR_PERCENTAGE_BY_ENTITY_ID.remove(entityId); // We get rid of the entry, so it doesn't call back future non-ability related damage.
 
 		if (ignorePercentage == 0) return;
 

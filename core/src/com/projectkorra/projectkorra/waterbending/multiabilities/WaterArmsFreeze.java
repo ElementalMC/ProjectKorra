@@ -134,7 +134,7 @@ public class WaterArmsFreeze extends IceAbility {
 		new TempBlock(this.location.getBlock(), Material.ICE.createBlockData(), this).setCanSuffocate(false).setRevertTime(10);
 
 		for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, 2.5)) {
-			if (entity instanceof LivingEntity && entity.getEntityId() != this.player.getEntityId() && !(entity instanceof ArmorStand)) {
+			if (entity instanceof LivingEntity && !entity.getUniqueId().equals(this.player.getUniqueId()) && !(entity instanceof ArmorStand)) {
 				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 					continue;
 				}

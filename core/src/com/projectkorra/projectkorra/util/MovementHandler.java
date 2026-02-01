@@ -199,7 +199,7 @@ public class MovementHandler {
 	 */
 	public static MovementHandler getFromEntityAndAbility(final Entity entity, final CoreAbility ability) {
 		for (final MovementHandler handler : handlers) {
-			if (handler.getEntity().getEntityId() == entity.getEntityId() && handler.getAbility().equals(ability)) {
+			if (handler.getEntity().getUniqueId().equals(entity.getUniqueId()) && handler.getAbility().equals(ability)) {
 				return handler;
 			}
 		}

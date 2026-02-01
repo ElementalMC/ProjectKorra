@@ -259,7 +259,7 @@ public class Ripple extends EarthAbility {
 		}
 		if (this.moveEarth(block, new Vector(0, 1, 0), length, false)) {
 			for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(block.getLocation().clone().add(0, 1, 0), 2)) {
-				if (entity.getEntityId() != this.player.getEntityId() && !this.entities.contains(entity)) {
+				if (!entity.getUniqueId().equals(this.player.getUniqueId()) && !this.entities.contains(entity)) {
 					if (!(entity instanceof FallingBlock)) {
 						this.entities.add(entity);
 					}

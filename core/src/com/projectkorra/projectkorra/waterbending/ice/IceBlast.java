@@ -294,7 +294,7 @@ public class IceBlast extends IceAbility {
 			}
 
 			for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.location, this.collisionRadius)) {
-				if (entity.getEntityId() != this.player.getEntityId() && entity instanceof LivingEntity) {
+				if (!entity.getUniqueId().equals(this.player.getUniqueId()) && entity instanceof LivingEntity) {
 					this.affect((LivingEntity) entity);
 					this.progressing = false;
 					this.returnWater();

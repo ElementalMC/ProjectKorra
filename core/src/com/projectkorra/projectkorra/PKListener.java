@@ -833,7 +833,7 @@ public class PKListener implements Listener {
 	@EventHandler
 	public void onHorizontalCollision(final HorizontalVelocityChangeEvent e) {
 		if (e.getEntity() instanceof LivingEntity) {
-			if (e.getEntity().getEntityId() != e.getInstigator().getEntityId()) {
+			if (!e.getEntity().getUniqueId().equals(e.getInstigator().getUniqueId())) {
 				final double minimumDistance = this.plugin.getConfig().getDouble("Properties.HorizontalCollisionPhysics.WallDamageMinimumDistance");
 				final double maxDamage = this.plugin.getConfig().getDouble("Properties.HorizontalCollisionPhysics.WallDamageCap");
 				final double damage = ((e.getDistanceTraveled() - minimumDistance) < 0 ? 0 : e.getDistanceTraveled() - minimumDistance) / (e.getDifference().length());
@@ -847,7 +847,7 @@ public class PKListener implements Listener {
 	@EventHandler(priority = EventPriority.NORMAL, ignoreCancelled = true)
 	public void onInventoryClick(final InventoryClickEvent event) {
 		for (final MetalClips clips : CoreAbility.getAbilities(MetalClips.class)) {
-			if (clips.getTargetEntity() != null && clips.getTargetEntity().getEntityId() == event.getWhoClicked().getEntityId()) {
+			if (clips.getTargetEntity() != null && clips.getTargetEntity().getUniqueId().equals(event.getWhoClicked().getUniqueId())) {
 				event.setCancelled(true);
 				break;
 			}
@@ -2029,7 +2029,7 @@ public class PKListener implements Listener {
 
 	@EventHandler(priority = EventPriority.HIGHEST, ignoreCancelled = true)
 	public void onProjectileHit(final ProjectileHitEvent event) {
-		final Integer id = event.getEntity().getEntityId();
+		final java.util.UUID id = event.getEntity().getUniqueId();
 		final Smokescreen smokescreen = Smokescreen.getSnowballs().get(id);
 		if (smokescreen != null) {
 			final Location loc = event.getEntity().getLocation();

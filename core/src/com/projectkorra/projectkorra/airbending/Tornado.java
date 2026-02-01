@@ -144,7 +144,7 @@ public class Tornado extends AirAbility {
 							vy = 0.05 * this.playerPushFactor;
 						}
 
-						if (entity.getEntityId() == this.player.getEntityId()) {
+						if (entity.getUniqueId().equals(this.player.getUniqueId())) {
 							final Vector direction = this.player.getEyeLocation().getDirection().clone().normalize();
 							vx = direction.getX();
 							vz = direction.getZ();

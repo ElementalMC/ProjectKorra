@@ -96,7 +96,7 @@ public class Bloodbending extends BloodAbility {
 					if (entity instanceof Player) {
 						final Player enemyPlayer = (Player) entity;
 						final BendingPlayer enemyBPlayer = BendingPlayer.getBendingPlayer(enemyPlayer);
-						if (enemyBPlayer == null || RegionProtection.isRegionProtected(this, entity.getLocation()) || enemyBPlayer.isAvatarState() || entity.getEntityId() == player.getEntityId() || enemyBPlayer.canBendIgnoreBindsCooldowns(this)) {
+						if (enemyBPlayer == null || RegionProtection.isRegionProtected(this, entity.getLocation()) || enemyBPlayer.isAvatarState() || entity.getUniqueId().equals(player.getUniqueId()) || enemyBPlayer.canBendIgnoreBindsCooldowns(this)) {
 							continue;
 						}
 					}
@@ -123,7 +123,7 @@ public class Bloodbending extends BloodAbility {
 			}
 			this.target = entities.get(0);
 
-			if (this.target == null || !(this.target instanceof LivingEntity) || RegionProtection.isRegionProtected(this, this.target.getLocation()) || this.target.getEntityId() == player.getEntityId() || BLOODLESS_ENTITIES.contains(this.target.getType())) {
+			if (this.target == null || !(this.target instanceof LivingEntity) || RegionProtection.isRegionProtected(this, this.target.getLocation()) || this.target.getUniqueId().equals(player.getUniqueId()) || BLOODLESS_ENTITIES.contains(this.target.getType())) {
 				return;
 			} else if (this.target instanceof Player) {
 				final BendingPlayer targetBPlayer = BendingPlayer.getBendingPlayer((Player) this.target);
@@ -225,7 +225,7 @@ public class Bloodbending extends BloodAbility {
 				} else if (entity instanceof Player) {
 					final BendingPlayer targetBPlayer = BendingPlayer.getBendingPlayer((Player) entity);
 					if (targetBPlayer != null) {
-						if (!targetBPlayer.canBeBloodbent() || entity.getEntityId() == this.player.getEntityId() || targetBPlayer.isAvatarState()) {
+						if (!targetBPlayer.canBeBloodbent() || entity.getUniqueId().equals(this.player.getUniqueId()) || targetBPlayer.isAvatarState()) {
 							continue;
 						}
 					}

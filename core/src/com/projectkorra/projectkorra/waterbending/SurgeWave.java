@@ -364,13 +364,13 @@ public class SurgeWave extends WaterAbility {
 					boolean knockback = false;
 					for (final Block block : this.waveBlocks.keySet()) {
 						if (entity.getLocation().distanceSquared(block.getLocation()) <= 4) {
-							if (entity instanceof LivingEntity && this.freezing && entity.getEntityId() != this.player.getEntityId()) {
+							if (entity instanceof LivingEntity && this.freezing && !entity.getUniqueId().equals(this.player.getUniqueId())) {
 								this.activateFreeze = true;
 								this.frozenLocation = entity.getLocation();
 								this.freeze();
 								break;
 							}
-							if (entity.getEntityId() != this.player.getEntityId() || this.canHitSelf) {
+							if (!entity.getUniqueId().equals(this.player.getUniqueId()) || this.canHitSelf) {
 								knockback = true;
 							}
 						}

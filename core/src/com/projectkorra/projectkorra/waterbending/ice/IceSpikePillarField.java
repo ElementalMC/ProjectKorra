@@ -97,7 +97,7 @@ public class IceSpikePillarField extends IceAbility {
 			Block targetBlock = null;
 			entity_loop:
 			for (final Entity entity : entities) {
-				if (entity instanceof LivingEntity && entity.getEntityId() != this.player.getEntityId()) {
+				if (entity instanceof LivingEntity && !entity.getUniqueId().equals(this.player.getUniqueId())) {
 					for (final Block block : iceBlocks) {
 						if (block.getX() == entity.getLocation().getBlockX() && block.getZ() == entity.getLocation().getBlockZ()) {
 							target = entity;

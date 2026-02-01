@@ -293,7 +293,7 @@ public class WaterArmsWhip extends WaterAbility {
 					final Vector vector = entity.getLocation().toVector().subtract(endOfArm.toVector());
 					GeneralMethods.setVelocity(this, entity, vector.multiply(0.15));
 					if (entity instanceof LivingEntity) {
-						if (entity.getEntityId() != this.player.getEntityId()) {
+						if (!entity.getUniqueId().equals(this.player.getUniqueId())) {
 							this.hasDamaged = true;
 							DamageHandler.damageEntity(entity, this.punchDamage, this);
 						}
@@ -306,7 +306,7 @@ public class WaterArmsWhip extends WaterAbility {
 			case GRAB:
 				if (this.grabbedEntity == null) {
 					for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(location, 2)) {
-						if (entity instanceof LivingEntity && entity.getEntityId() != this.player.getEntityId() && !GRABBED_ENTITIES.containsKey(entity)) {
+						if (entity instanceof LivingEntity && !entity.getUniqueId().equals(this.player.getUniqueId()) && !GRABBED_ENTITIES.containsKey(entity)) {
 							if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 								continue;
 							}

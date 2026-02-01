@@ -89,7 +89,7 @@ public class EarthDomeOthers extends EarthAbility implements ComboAbility {
 		ParticleEffect.BLOCK_DUST.display(this.loc, 7, 0.2, 0.1, 0.2, 0.001, this.loc.getBlock().getRelative(BlockFace.DOWN).getBlockData());
 
 		for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.loc, 2)) {
-			if (!(entity instanceof LivingEntity) || entity.getEntityId() == this.player.getEntityId()) {
+			if (!(entity instanceof LivingEntity) || entity.getUniqueId().equals(this.player.getUniqueId())) {
 				continue;
 			}
 

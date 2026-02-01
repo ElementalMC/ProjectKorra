@@ -198,13 +198,13 @@ public class AirSuction extends AirAbility {
 				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 					continue;
 				}
-				if ((entity.getEntityId() == this.player.getEntityId()) && !this.canAffectSelf) {
+				if ((this.player.getUniqueId().equals(entity.getUniqueId())) && !this.canAffectSelf) {
 					continue;
 				}
 				
 				double knockback = this.pushFactor;
 				
-				if (entity.getEntityId() != player.getEntityId()) {
+				if (!entity.getUniqueId().equals(player.getUniqueId())) {
 					knockback = this.pushFactorForOthers;
 				}
 				

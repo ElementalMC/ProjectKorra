@@ -1,6 +1,7 @@
 package com.projectkorra.projectkorra.chiblocking;
 
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.bukkit.Location;
@@ -18,7 +19,7 @@ import com.projectkorra.projectkorra.util.ParticleEffect;
 
 public class Smokescreen extends ChiAbility {
 
-	private static final Map<Integer, Smokescreen> SNOWBALLS = new ConcurrentHashMap<>();
+	private static final Map<UUID, Smokescreen> SNOWBALLS = new ConcurrentHashMap<>();
 	private static final Map<String, Long> BLINDED_TIMES = new ConcurrentHashMap<>();
 	private static final Map<String, Smokescreen> BLINDED_TO_ABILITY = new ConcurrentHashMap<>();
 
@@ -42,7 +43,7 @@ public class Smokescreen extends ChiAbility {
 
 	@Override
 	public void progress() {
-		SNOWBALLS.put(this.player.launchProjectile(Snowball.class).getEntityId(), this);
+		SNOWBALLS.put(this.player.launchProjectile(Snowball.class).getUniqueId(), this);
 		this.bPlayer.addCooldown(this);
 		this.remove();
 	}
@@ -76,7 +77,7 @@ public class Smokescreen extends ChiAbility {
 				return;
 			}
 			final Player p = (Player) entity;
-			p.addPotionEffect(new PotionEffect(PotionEffectType.BLINDNESS, this.duration * 20, 2));
+			new PotionEffect(PotionEffectType.BLINDNESS, this.duration * 20, 2).apply(p);
 			BLINDED_TIMES.put(p.getName(), System.currentTimeMillis());
 			BLINDED_TO_ABILITY.put(p.getName(), this);
 		}
@@ -140,7 +141,7 @@ public class Smokescreen extends ChiAbility {
 		this.radius = radius;
 	}
 
-	public static Map<Integer, Smokescreen> getSnowballs() {
+	public static Map<UUID, Smokescreen> getSnowballs() {
 		return SNOWBALLS;
 	}
 

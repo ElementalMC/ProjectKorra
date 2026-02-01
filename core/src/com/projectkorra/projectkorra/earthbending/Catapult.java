@@ -65,7 +65,7 @@ public class Catapult extends EarthAbility {
 
 	private void moveEarth(final Vector apply, final Vector direction) {
 		for (final Entity entity : GeneralMethods.getEntitiesAroundPoint(this.origin, 2)) {
-			if (entity.getEntityId() != this.player.getEntityId()) {
+			if (!entity.getUniqueId().equals(this.player.getUniqueId())) {
 				if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
 					continue;
 				}

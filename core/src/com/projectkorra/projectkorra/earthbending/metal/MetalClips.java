@@ -265,7 +265,7 @@ public class MetalClips extends MetalAbility {
 				if (entity instanceof Player && this.canLoot && itemInHand.getType() == Material.IRON_INGOT && (itemInHand.hasItemMeta() && itemInHand.getItemMeta().getDisplayName().equalsIgnoreCase("Magnet"))) {
 					final Player targetPlayer = (Player) entity;
 
-					if (targetPlayer.getEntityId() == this.player.getEntityId()) {
+					if (targetPlayer.getUniqueId().equals(this.player.getUniqueId())) {
 						continue;
 					}
 
@@ -405,7 +405,7 @@ public class MetalClips extends MetalAbility {
 			}
 
 			for (final Entity e : GeneralMethods.getEntitiesAroundPoint(ii.getLocation(), 1.8)) {
-				if (e instanceof LivingEntity && e.getEntityId() != this.player.getEntityId()) {
+				if (e instanceof LivingEntity && !e.getUniqueId().equals(this.player.getUniqueId())) {
 					if ((e instanceof Player || e instanceof Zombie || e instanceof Skeleton)) {
 						if (this.targetEntity == null) {
 							this.targetEntity = (LivingEntity) e;

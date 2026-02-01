@@ -572,7 +572,7 @@ public class Torrent extends WaterAbility {
 	}
 
 	private void deflect(final Entity entity) {
-		if (entity.getEntityId() == this.player.getEntityId()) {
+		if (entity.getUniqueId().equals(this.player.getUniqueId())) {
 			return;
 		}
 		if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || ((entity instanceof Player) && Commands.invincible.contains(((Player) entity).getName()))) {
@@ -610,7 +610,7 @@ public class Torrent extends WaterAbility {
 	}
 
 	private void affect(final Entity entity, final Vector direction) {
-		if (entity.getEntityId() == this.player.getEntityId()) {
+		if (entity.getUniqueId().equals(this.player.getUniqueId())) {
 			return;
 		}
 		if (GeneralMethods.isRegionProtectedFromBuild(this, entity.getLocation()) || (entity instanceof Player && Commands.invincible.contains(((Player) entity).getName()))) {
