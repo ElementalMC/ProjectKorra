@@ -2,7 +2,9 @@ package com.projectkorra.projectkorra.util.logging;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.SimpleDateFormat;
+import java.time.Instant;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Formatter;
 import java.util.logging.LogRecord;
 
@@ -14,7 +16,7 @@ import java.util.logging.LogRecord;
  */
 public class LogFormatter extends Formatter {
 
-	private final SimpleDateFormat date = new SimpleDateFormat("MMM-dd|HH:mm:ss");
+	private static final DateTimeFormatter DATE_FORMAT = DateTimeFormatter.ofPattern("MMM-dd|HH:mm:ss").withZone(ZoneId.systemDefault());
 
 	@Override
 	public String format(final LogRecord record) {
@@ -22,7 +24,7 @@ public class LogFormatter extends Formatter {
 		final Throwable ex = record.getThrown();
 
 		builder.append("(");
-		builder.append(this.date.format(record.getMillis()));
+		builder.append(DATE_FORMAT.format(Instant.ofEpochMilli(record.getMillis())));
 		builder.append(")");
 		builder.append(" [");
 		builder.append(record.getLevel().getLocalizedName().toUpperCase());

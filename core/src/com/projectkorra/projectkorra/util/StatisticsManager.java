@@ -85,9 +85,9 @@ public class StatisticsManager extends Manager implements Runnable {
 			}
 			for (final Statistic statistic : Statistic.values()) {
 				final String statName = statistic.getStatisticName(ability);
-				try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_statKeys WHERE statName = '" + statName + "'")) {
+				try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_statKeys WHERE statName = ?", statName)) {
 					if (rs != null && !rs.next()) {
-						DBConnection.sql.modifyQuery("INSERT INTO pk_statKeys (statName) VALUES ('" + statName + "')", false);
+						DBConnection.sql.modifyQuery("INSERT INTO pk_statKeys (statName) VALUES (?)", false, statName);
 					}
 				} catch (final SQLException e) {
 					ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
@@ -110,7 +110,7 @@ public class StatisticsManager extends Manager implements Runnable {
 	public void load(final UUID uuid) {
 		this.STATISTICS.put(uuid, new HashMap<>());
 		this.DELTA.put(uuid, new HashMap<>());
-		try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_stats WHERE uuid = '" + uuid.toString() + "'")) {
+		try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_stats WHERE uuid = ?", uuid.toString())) {
 			while (rs.next()) {
 				this.STATISTICS.get(uuid).put(rs.getInt("statId"), rs.getLong("statValue"));
 				this.DELTA.get(uuid).put(rs.getInt("statId"), 0L);
@@ -128,11 +128,11 @@ public class StatisticsManager extends Manager implements Runnable {
 		for (final Entry<Integer, Long> entry : stats.entrySet()) {
 			final int statId = entry.getKey();
 			final long statValue = entry.getValue();
-			try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_stats WHERE uuid = '" + uuid.toString() + "' AND statId = " + statId)) {
-				if (!rs.next()) {
-					DBConnection.sql.modifyQuery("INSERT INTO pk_stats (statId, uuid, statValue) VALUES (" + statId + ", '" + uuid.toString() + "', " + statValue + ")", async);
-				} else {
-					DBConnection.sql.modifyQuery("UPDATE pk_stats SET statValue = statValue + " + statValue + " WHERE uuid = '" + uuid.toString() + "' AND statId = " + statId + ";", async);
+			try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_stats WHERE uuid = ? AND statId = ?", uuid.toString(), statId)) {
+				if (rs != null && !rs.next()) {
+					DBConnection.sql.modifyQuery("INSERT INTO pk_stats (statId, uuid, statValue) VALUES (?, ?, ?)", async, statId, uuid.toString(), statValue);
+				} else if (rs != null) {
+					DBConnection.sql.modifyQuery("UPDATE pk_stats SET statValue = statValue + ? WHERE uuid = ? AND statId = ?", async, statValue, uuid.toString(), statId);
 				}
 			} catch (final SQLException e) {
 				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
@@ -153,7 +153,7 @@ public class StatisticsManager extends Manager implements Runnable {
 	public long getStatisticCurrent(final UUID uuid, final int statId) {
 		// If the player is offline, pull value from database.
 		if (!this.STATISTICS.containsKey(uuid)) {
-			try (ResultSet rs = DBConnection.sql.readQuery("SELECT statValue FROM pk_stats WHERE uuid = '" + uuid.toString() + "' AND statId = " + statId + ";")) {
+			try (ResultSet rs = DBConnection.sql.readQuery("SELECT statValue FROM pk_stats WHERE uuid = ? AND statId = ?", uuid.toString(), statId)) {
 				if (rs.next()) {
 					return rs.getLong("statValue");
 				}
@@ -180,7 +180,7 @@ public class StatisticsManager extends Manager implements Runnable {
 		final Map<Integer, Long> map = new HashMap<>();
 		// If the player is offline, create a new temporary Map from the database.
 		if (!this.STATISTICS.containsKey(uuid)) {
-			try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_stats WHERE uuid = '" + uuid.toString() + "'")) {
+			try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_stats WHERE uuid = ?", uuid.toString())) {
 				while (rs.next()) {
 					final int statId = rs.getInt("statId");
 					final long statValue = rs.getLong("statValue");

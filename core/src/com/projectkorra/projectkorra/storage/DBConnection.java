@@ -149,21 +149,22 @@ public class DBConnection {
 			Map<String, Map<String, Long>> oldTable = new HashMap<>();
 
 			// Get all cooldown ids from the database.
-			try {
-				ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_cooldown_ids");
-				while (rs.next()) {
-					oldCooldownIDs.put(rs.getInt("id"), rs.getString("cooldown_name"));
+			try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_cooldown_ids")) {
+				if (rs != null) {
+					while (rs.next()) {
+						oldCooldownIDs.put(rs.getInt("id"), rs.getString("cooldown_name"));
+					}
 				}
-				rs.close();
 			} catch (final SQLException e) {
 				ProjectKorra.log.warning("Failed to get cooldown ids from database.");
 				ProjectKorra.log.log(java.util.logging.Level.WARNING, e.getMessage(), e);
 			}
 
 			//Get all player cooldowns from the database
-			try {
-				ResultSet rs = sql.readQuery("SELECT * FROM pk_cooldowns");
-
+			try (ResultSet rs = sql.readQuery("SELECT * FROM pk_cooldowns")) {
+				if (rs == null) {
+					return;
+				}
 				while (rs.next()) {
 					final String uuid = rs.getString("uuid");
 					final int cooldownID = rs.getInt("cooldown_id");
@@ -182,7 +183,6 @@ public class DBConnection {
 					oldTable.get(uuid).put(cooldownName, cooldown);
 				}
 
-				rs.close();
 				sql.close();
 
 				ProjectKorra.log.info("Converting old cooldowns to new cooldowns table... The DB will reconnect a few times.");
@@ -207,7 +207,7 @@ public class DBConnection {
 				for (final String uuid : oldTable.keySet()) {
 					for (final String cooldown : oldTable.get(uuid).keySet()) {
 						final long cooldownTime = oldTable.get(uuid).get(cooldown);
-						DBConnection.sql.modifyQuery("INSERT INTO pk_cooldowns (uuid, cooldown, value) VALUES ('" + uuid + "', '" + cooldown + "', " + cooldownTime + ")", false);
+						DBConnection.sql.modifyQuery("INSERT INTO pk_cooldowns (uuid, cooldown, value) VALUES (?, ?, ?)", false, uuid, cooldown, cooldownTime);
 					}
 				}
 				sql.getConnection().setAutoCommit(true);

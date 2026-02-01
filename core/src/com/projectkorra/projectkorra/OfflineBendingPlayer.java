@@ -402,7 +402,7 @@ public class OfflineBendingPlayer {
 
                     //Load cooldowns
                     if (ProjectKorra.isDatabaseCooldownsEnabled()) {
-                        try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_cooldowns WHERE uuid = '" + uuid.toString() + "'")) {
+                        try (ResultSet rs = DBConnection.sql.readQuery("SELECT * FROM pk_cooldowns WHERE uuid = ?", uuid.toString())) {
                             while (rs.next()) {
                                 final String name = rs.getString("cooldown");
                                 final long value = rs.getLong("value");
@@ -414,7 +414,7 @@ public class OfflineBendingPlayer {
                     }
 
                     //Load tempelements from the database
-                   try (ResultSet rs3 = DBConnection.sql.readQuery("SELECT * FROM pk_temp_elements WHERE uuid = '" + uuid.toString() + "'")) {
+                   try (ResultSet rs3 = DBConnection.sql.readQuery("SELECT * FROM pk_temp_elements WHERE uuid = ?", uuid.toString())) {
                        Map<Element, Long> elements = new HashMap<>();
                        Map<SubElement, Long> subElements = new HashMap<>();
 
@@ -522,7 +522,7 @@ public class OfflineBendingPlayer {
                 subs.append("NULL");
             }
 
-            DBConnection.sql.modifyQuery("UPDATE pk_players SET subelement = '" + subs.toString() + "' WHERE uuid = '" + uuid + "'");
+            DBConnection.sql.modifyQuery("UPDATE pk_players SET subelement = ? WHERE uuid = ?", true, subs.toString(), uuid.toString());
         }, 1L);
     }
 
@@ -563,7 +563,7 @@ public class OfflineBendingPlayer {
                 elements.append("NULL");
             }
 
-            DBConnection.sql.modifyQuery("UPDATE pk_players SET element = '" + elements.toString() + "' WHERE uuid = '" + uuid + "'");
+            DBConnection.sql.modifyQuery("UPDATE pk_players SET element = ? WHERE uuid = ?", true, elements.toString(), uuid.toString());
         }, 1L);
     }
 
@@ -575,13 +575,13 @@ public class OfflineBendingPlayer {
 
             try {
                 DBConnection.sql.getConnection().setAutoCommit(false);
-                DBConnection.sql.modifyQuery("DELETE FROM pk_temp_elements WHERE uuid = '" + uuid + "'");
+                DBConnection.sql.modifyQuery("DELETE FROM pk_temp_elements WHERE uuid = ?", true, uuid.toString());
                 DBConnection.sql.getConnection().commit(); //Force the delete statement to go through before the next SQL statement
                 for (Element e : this.tempElements.keySet()) {
-                    DBConnection.sql.modifyQuery("INSERT INTO pk_temp_elements (uuid, element, expiry) VALUES ('" + uuid + "', '" + e.getName() + "', " + this.tempElements.get(e) + ")");
+                    DBConnection.sql.modifyQuery("INSERT INTO pk_temp_elements (uuid, element, expiry) VALUES (?, ?, ?)", true, uuid.toString(), e.getName(), this.tempElements.get(e));
                 }
                 for (Element e : this.tempSubElements.keySet()) {
-                    DBConnection.sql.modifyQuery("INSERT INTO pk_temp_elements (uuid, element, expiry) VALUES ('" + uuid + "', '" + e.getName() + "', " + this.tempSubElements.get(e) + ")");
+                    DBConnection.sql.modifyQuery("INSERT INTO pk_temp_elements (uuid, element, expiry) VALUES (?, ?, ?)", true, uuid.toString(), e.getName(), this.tempSubElements.get(e));
                 }
                 DBConnection.sql.getConnection().commit(); //Force the delete statement to go through before the next SQL statement
                 DBConnection.sql.getConnection().setAutoCommit(true);
@@ -647,7 +647,7 @@ public class OfflineBendingPlayer {
             return;
         }
 
-        DBConnection.sql.modifyQuery("UPDATE pk_players SET slot" + slot + " = '" + (this.abilities.get(slot) == null ? null : abilities.get(slot)) + "' WHERE uuid = '" + uuid + "'");
+        DBConnection.sql.modifyQuery("UPDATE pk_players SET slot" + slot + " = ? WHERE uuid = ?", true, this.abilities.get(slot) == null ? "null" : abilities.get(slot), uuid.toString());
     }
 
     /**
@@ -1119,7 +1119,7 @@ public class OfflineBendingPlayer {
         this.abilities = abilities;
 
         for (int i = 1; i <= 9; i++) {
-            DBConnection.sql.modifyQuery("UPDATE pk_players SET slot" + i + " = '" + abilities.get(i) + "' WHERE uuid = '" + this.uuid + "'");
+            DBConnection.sql.modifyQuery("UPDATE pk_players SET slot" + i + " = ? WHERE uuid = ?", true, abilities.get(i), this.uuid.toString());
         }
     }
 
@@ -1141,7 +1141,7 @@ public class OfflineBendingPlayer {
      */
     public void setPermaRemoved(final boolean permaRemoved) {
         this.permaRemoved = permaRemoved;
-        DBConnection.sql.modifyQuery("UPDATE pk_players SET permaremoved = '" + (permaRemoved ? "true" : "false") + "' WHERE uuid = '" + uuid + "'");
+        DBConnection.sql.modifyQuery("UPDATE pk_players SET permaremoved = ? WHERE uuid = ?", true, permaRemoved ? "true" : "false", uuid.toString());
     }
 
     public void toggleBending() {

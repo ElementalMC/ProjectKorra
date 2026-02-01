@@ -5,13 +5,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.PriorityQueue;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import com.projectkorra.projectkorra.ability.Ability;
 import com.projectkorra.projectkorra.ability.CoreAbility;
@@ -38,7 +38,7 @@ import io.papermc.lib.PaperLib;
 
 public class TempBlock {
 
-	private static final Map<Block, LinkedList<TempBlock>> instances_ = new ConcurrentHashMap<>();
+	private static final Map<Block, CopyOnWriteArrayList<TempBlock>> instances_ = new ConcurrentHashMap<>();
 	/**
 	 * Marked for removal. Doesn't do anything right now
 	 */
@@ -102,7 +102,8 @@ public class TempBlock {
 		}
 
 		if (instances_.containsKey(block)) {
-			final TempBlock temp = instances_.get(block).getFirst();
+			final List<TempBlock> list = instances_.get(block);
+			final TempBlock temp = list.get(0);
 			this.state = temp.state; //Set the original blockstate of the tempblock
 			put(block, this);
 			block.setBlockData(newData, applyPhysics(newData.getMaterial()));
@@ -128,7 +129,8 @@ public class TempBlock {
 	 */
 	public static TempBlock get(final Block block) {
 		if (isTempBlock(block)) {
-			return instances_.get(block).getLast();
+			final List<TempBlock> list = instances_.get(block);
+			return list.get(list.size() - 1);
 		}
 		return null;
 	}
@@ -138,7 +140,7 @@ public class TempBlock {
 	 * @param block The block location
 	 * @return The list of TempBlocks
 	 */
-	public static LinkedList<TempBlock> getAll(Block block) {
+	public static List<TempBlock> getAll(Block block) {
 		return instances_.get(block);
 	}
 
@@ -148,10 +150,7 @@ public class TempBlock {
 	 * @param tempBlock The TempBlock
 	 */
 	private static void put(Block block, TempBlock tempBlock) {
-		if (!instances_.containsKey(block)) {
-			instances_.put(block, new LinkedList<>());
-		}
-		instances_.get(block).add(tempBlock);
+		instances_.computeIfAbsent(block, k -> new CopyOnWriteArrayList<>()).add(tempBlock);
 	}
 
 	public static boolean isTempBlock(final Block block) {
@@ -341,7 +340,8 @@ public class TempBlock {
 		PaperLib.getChunkAtAsync(this.block.getLocation()).thenAccept(result -> {
 			Bukkit.getScheduler().runTask(ProjectKorra.plugin, () -> {
 				if (hasStack && instances_.containsKey(this.block)) {
-					TempBlock last = instances_.get(this.block).getLast();
+					final List<TempBlock> list = instances_.get(this.block);
+					TempBlock last = list.get(list.size() - 1);
 					this.block.setBlockData(last.newData); //Set the block to the next in line TempBlock
 				} else if (!hasStack) {
 					revertState();
