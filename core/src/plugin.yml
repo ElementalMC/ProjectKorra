@@ -3,7 +3,7 @@ author: ProjectKorra
 api-version: 1.21.11
 version: ${project.version}
 main: com.projectkorra.projectkorra.ProjectKorra
-softdepend: [GriefDefender, WorldGuard, WorldEdit, Factions, GriefPrevention, Towny, NoCheatPlus, LWC, Residence, RedProtect, PlaceholderAPI, Lands, Plan, HuskTowns]
+softdepend: [GriefDefender, WorldGuard, WorldEdit, Factions, GriefPrevention, Towny, NoCheatPlus, LWC, Residence, RedProtect, PlaceholderAPI, Lands, Plan, HuskTowns, HuskClaims]
 commands:
   projectkorra:
     aliases: [b,bending,mtla,tla,korra,pk,bend]
@@ -28,6 +28,7 @@ permissions:
       bending.water.bloodbending: true
       bending.fire.bluefire: true
       bending.fire.bluefirefactor: true
+      bending.fire.greenfire: true
       bending.air.flight: true
       bending.ability.MetalClips.loot: true
       bending.ability.MetalClips.4clips: true
@@ -165,6 +166,7 @@ permissions:
       bending.command.add.combustion: true
       bending.command.add.lightning: true
       bending.command.add.bluefire: true
+      bending.command.add.greenfire: true
       bending.command.choose.fire: true
       bending.ability.Blaze: true
       bending.ability.FireBlast: true

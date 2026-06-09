@@ -79,6 +79,7 @@ public class ConfigManager {
 			config.addDefault("Chat.Colors.Fire", ChatColor.RED.getName());
 			config.addDefault("Chat.Colors.FireSub", ChatColor.DARK_RED.getName());
 			config.addDefault("Chat.Colors.BlueFire", "#1ac5fd");
+			config.addDefault("Chat.Colors.GreenFire", "#2ecc40");
 			config.addDefault("Chat.Colors.Combustion", "#690213");
 			config.addDefault("Chat.Colors.Lightning", "#820d0d");
 			config.addDefault("Chat.Colors.Chi", ChatColor.GOLD.getName());
@@ -776,6 +777,7 @@ public class ConfigManager {
 			config.addDefault("Properties.RegionProtection.RespectFactions", true);
 			config.addDefault("Properties.RegionProtection.RespectTowny", true);
 			config.addDefault("Properties.RegionProtection.RespectHuskTowns", true);
+			config.addDefault("Properties.RegionProtection.RespectHuskClaims", true);
 			config.addDefault("Properties.RegionProtection.RespectLWC", true);
 			config.addDefault("Properties.RegionProtection.RespectLands", true);
 			config.addDefault("Properties.RegionProtection.Residence.Flag", "bending");
