@@ -149,7 +149,14 @@ public class BendingPlayer extends OfflineBendingPlayer {
 		return this.canBend(ability, false, false);
 	}
 
-	private boolean canBend(@NotNull final CoreAbility ability, final boolean ignoreBinds, final boolean ignoreCooldowns) {
+	private boolean canBend(final CoreAbility ability, final boolean ignoreBinds, final boolean ignoreCooldowns) {
+		// A null ability can be passed in when an ability is looked up by name but is disabled
+		// (disabled abilities are only registered by class, not by name). You can never bend a
+		// non-existent ability, so guard against it here to avoid an NPE further down.
+		if (ability == null) {
+			return false;
+		}
+
 		// Loop through all hooks and test them
 		for (JavaPlugin plugin : BEND_HOOKS.keySet()) {
 			CanBendHook hook = BEND_HOOKS.get(plugin);

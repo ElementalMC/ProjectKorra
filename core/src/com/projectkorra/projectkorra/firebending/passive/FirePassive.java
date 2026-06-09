@@ -16,10 +16,22 @@ public class FirePassive {
 			return;
 		}
 		final BendingPlayer bPlayer = BendingPlayer.getBendingPlayer(player);
-		if (bPlayer != null && bPlayer.canBendPassive(CoreAbility.getAbility(Illumination.class)) && bPlayer.canUsePassive(CoreAbility.getAbility(Illumination.class))) {
+		if (bPlayer == null) {
+			return;
+		}
+
+		// Illumination is only registered by name when it is enabled. If it is disabled it still
+		// exists as a "fake" instance by class, so look it up by class and bail out if it's missing
+		// or disabled. This avoids passing a null ability into canBend(...) which would throw an NPE.
+		final CoreAbility illumination = CoreAbility.getAbility(Illumination.class);
+		if (illumination == null || !illumination.isEnabled()) {
+			return;
+		}
+
+		if (bPlayer.canBendPassive(illumination) && bPlayer.canUsePassive(illumination)) {
 			if (!CoreAbility.hasAbility(player, Illumination.class) && (!CoreAbility.hasAbility(player, Tremorsense.class)
 					|| (CoreAbility.getAbility(player, Tremorsense.class) != null && !CoreAbility.getAbility(player, Tremorsense.class).isGlowing()))
-					&& bPlayer.canBendIgnoreBinds(CoreAbility.getAbility("Illumination")) && ConfigManager.defaultConfig.get().getBoolean("Abilities.Fire.Illumination.Passive")) {
+					&& bPlayer.canBendIgnoreBinds(illumination) && ConfigManager.defaultConfig.get().getBoolean("Abilities.Fire.Illumination.Passive")) {
 				if (bPlayer.isIlluminating()) {
 					new Illumination(player);
 				}
