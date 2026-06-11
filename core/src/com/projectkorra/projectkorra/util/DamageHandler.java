@@ -200,10 +200,14 @@ public class DamageHandler {
 				}
 			}
 
-			DamageSource.Builder damageSourceBuilder = DamageSource.builder(DamageType.GENERIC)
-					.withCausingEntity(source);
+			// Paper/Purpur 1.21.11+ requires that withDirectEntity is set whenever
+			// withCausingEntity is set (and vice-versa). For "sourceless" damage we
+			// attach neither entity so the damage is treated as plain environmental
+			// damage; otherwise we attach the source as both the causing and direct
+			// entity.
+			DamageSource.Builder damageSourceBuilder = DamageSource.builder(DamageType.GENERIC);
 			if (!doSourcelessDamage) {
-				damageSourceBuilder = damageSourceBuilder.withDirectEntity(source);
+				damageSourceBuilder = damageSourceBuilder.withCausingEntity(source).withDirectEntity(source);
 			}
 
 			final double prevHealth = lent.getHealth();
