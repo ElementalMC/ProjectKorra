@@ -779,10 +779,10 @@ public class GeneralMethods {
 		final Vector direction = player.getEyeLocation().getDirection();
 		final Location forward = origin.clone().add(direction);
 		final Location backwards = origin.clone().add(direction.clone().multiply(-1));
-		final Predicate<Entity> filter = getEntityFilter().and(entity -> !avoid.contains(entity)
+		final Predicate<Entity> filter = getEntityFilter().and(entity -> !entity.equals(player)
+				&& (avoid == null || !avoid.contains(entity))
 				&& entity.getWorld().equals(origin.getWorld())
 				&& entity instanceof LivingEntity);
-		avoid.add(player);
 
 		for (Entity entity : getEntitiesAroundPoint(origin, range, filter)) {
 			Location location = entity.getLocation();
