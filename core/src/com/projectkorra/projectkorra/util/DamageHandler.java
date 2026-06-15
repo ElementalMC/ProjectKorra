@@ -231,6 +231,9 @@ public class DamageHandler {
 	}
 	
 	public static void damageEntity(final Entity entity, final double damage, final Ability ability, final boolean ignoreArmor) {
+		if (ability == null) {
+			return;
+		}
 		damageEntity(entity, ability.getPlayer(), damage, ability, ignoreArmor, false);
 	}
 
@@ -239,6 +242,9 @@ public class DamageHandler {
 	}
 
 	public static void damageEntity(final Entity entity, final double damage, final Ability ability) {
+		if (ability == null) {
+			return;
+		}
 		damageEntity(entity, ability.getPlayer(), damage, ability);
 	}
 
