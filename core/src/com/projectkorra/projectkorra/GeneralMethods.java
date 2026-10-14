@@ -98,6 +98,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.function.Predicate;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static com.projectkorra.projectkorra.ProjectKorra.plugin;
 
@@ -1576,19 +1578,21 @@ public class GeneralMethods {
 		event.getAffected().setVelocity(velocity);
 	}
 
-	// no longer used, but updated to match the 26.x pattern anyways
+	// No longer used in core, but addons (JedCore, ProjectAddons, Spirits) still gate version adapters on it.
+	// Only the leading numeric part is parsed, so both "1.21.11-R0.1-SNAPSHOT" and Paper 26.x strings
+	// such as "26.2.build.133-stable" or "26.3-pre-2" resolve instead of falling back to 1.16.4.
 	public static int getMCVersion() {
-		String version = Bukkit.getBukkitVersion().split("-", 2)[0];
+		final String version = Bukkit.getBukkitVersion();
+		final Matcher matcher = Pattern.compile("^(\\d+)\\.(\\d+)(?:\\.(\\d+))?").matcher(version);
 
-		if (!version.matches("\\d+\\.\\d+(\\.\\d+)?")) {
+		if (!matcher.find()) {
 			ProjectKorra.log.warning("Version not valid! Cannot parse version \"" + version + "\"");
 			return 1164;
 		}
 
-		String[] split = version.split("\\.");
-		int major = Integer.parseInt(split[0]);
-		int minor = Integer.parseInt(split[1]);
-		int fix = (split.length == 3) ? Integer.parseInt(split[2]) : 0;
+		final int major = Integer.parseInt(matcher.group(1));
+		final int minor = Integer.parseInt(matcher.group(2));
+		final int fix = matcher.group(3) != null ? Integer.parseInt(matcher.group(3)) : 0;
 
 		return major * 1000 + minor * 10 + fix;
 	}
