@@ -170,7 +170,7 @@ public class DamageHandler {
 
 		double percentage = getIgnoreArmorPercentage(ability);
 		// Adding source so that we don't need to modify FireDamageTimer class, which would cause breaks.
-		final AbilityDamageEntityEvent damageEvent = new AbilityDamageEntityEvent(entity, ability, damage, (ignoreArmor || percentage == 1.));
+		final AbilityDamageEntityEvent damageEvent = new AbilityDamageEntityEvent(source, entity, ability, damage, (ignoreArmor || percentage == 1.));
 		
 		if (entity instanceof Player && Commands.invincible.contains(entity.getName())) {
 			damageEvent.setCancelled(true);
@@ -183,7 +183,7 @@ public class DamageHandler {
 			damage = Math.max(0, damageEvent.getDamage());
 
 			if (lent.getHealth() - damage <= 0 && !entity.isDead()) {
-				final EntityBendingDeathEvent event = new EntityBendingDeathEvent(entity, damage, ability);
+				final EntityBendingDeathEvent event = new EntityBendingDeathEvent(source, entity, damage, ability);
 				Bukkit.getServer().getPluginManager().callEvent(event);
 			}
 
