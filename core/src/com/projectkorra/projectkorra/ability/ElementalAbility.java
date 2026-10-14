@@ -23,6 +23,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffectType;
 
 import com.projectkorra.projectkorra.GeneralMethods;
+import com.projectkorra.projectkorra.ProjectKorra;
 
 /**
  * ElementalAbility is used to hold methods that should be accessible by every
@@ -88,7 +89,12 @@ public abstract class ElementalAbility extends CoreAbility {
 		iterator.forEachRemaining(next -> {
 			if (next.startsWith("#")) {
 				NamespacedKey key = NamespacedKey.fromString(next.replaceFirst("#", ""));
-				for (Material material : Bukkit.getTag(Tag.REGISTRY_BLOCKS, key, Material.class).getValues()) {
+				Tag<Material> tag = key == null ? null : Bukkit.getTag(Tag.REGISTRY_BLOCKS, key, Material.class);
+				if (tag == null) {
+					ProjectKorra.log.warning("Unknown block tag '" + next + "' in the bendable blocks config, skipping it.");
+					return;
+				}
+				for (Material material : tag.getValues()) {
 					outputSet.add(material.toString());
 				}
 			} else {
