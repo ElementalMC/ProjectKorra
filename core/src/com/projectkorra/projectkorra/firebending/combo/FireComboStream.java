@@ -68,8 +68,8 @@ public class FireComboStream extends BukkitRunnable {
 		this.collisionRadius = 2;
 		this.player = player;
 		this.bPlayer = BendingPlayer.getBendingPlayer(player);
-		this.particle = bPlayer.canUseSubElement(SubElement.BLUE_FIRE) ? Particle.SOUL_FIRE_FLAME
-				: bPlayer.canUseSubElement(SubElement.GREEN_FIRE) ? FireAbility.getGreenFireParticle()
+		this.particle = bPlayer.canUseSubElement(SubElement.GREEN_FIRE) ? FireAbility.getGreenFireParticle()
+				: bPlayer.canUseSubElement(SubElement.BLUE_FIRE) ? Particle.SOUL_FIRE_FLAME
 				: Particle.FLAME;
 		this.particleData = null;
 		this.coreAbility = coreAbility;

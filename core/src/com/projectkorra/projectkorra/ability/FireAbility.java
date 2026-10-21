@@ -277,10 +277,11 @@ public abstract class FireAbility extends ElementalAbility {
 	}
 
 	public void playFirebendingParticles(final Location loc, final int amount, final double xOffset, final double yOffset, final double zOffset) {
-		if (this.getBendingPlayer().canUseSubElement(SubElement.BLUE_FIRE)) {
-			loc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc, amount, xOffset, yOffset, zOffset, 0, null, true);
-		} else if (this.getBendingPlayer().canUseSubElement(SubElement.GREEN_FIRE)) {
+		// Green fire takes priority over blue fire for players who have both.
+		if (this.getBendingPlayer().canUseSubElement(SubElement.GREEN_FIRE)) {
 			loc.getWorld().spawnParticle(GREEN_FIRE_PARTICLE, loc, amount, xOffset, yOffset, zOffset, 0, null, true);
+		} else if (this.getBendingPlayer().canUseSubElement(SubElement.BLUE_FIRE)) {
+			loc.getWorld().spawnParticle(Particle.SOUL_FIRE_FLAME, loc, amount, xOffset, yOffset, zOffset, 0, null, true);
 		} else {
 			loc.getWorld().spawnParticle(Particle.FLAME, loc, amount, xOffset, yOffset, zOffset, 0, null, true);
 		}
